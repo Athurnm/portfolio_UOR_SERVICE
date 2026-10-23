@@ -294,6 +294,7 @@ The following decisions are formally recorded in `journal/state/decisions.json` 
 | **`DEC-0239-NON-MM`** | 2026-10-23 | SSOT career data integration from `profile.md` and `cv-athur-ai-product-manager.md` | Populates verified high-impact metrics (IDR 1.2B savings, +60% CTR, 3x data scale) and AI credentials. | `decided` |
 | **`DEC-0240-NON-MM`** | 2026-10-23 | Personal conversion metrics: Total Page Views & up to 30% email conversion rate within 2 months | Replaces corporate B2B metrics with actionable personal career milestones. | `decided` |
 | **`DEC-0241-NON-MM`** | 2026-10-23 | Amber Beacon design tokens with accessible `--amber-text` token separation | Enforces WCAG 2.2 AA contrast compliance while preserving glowing amber aesthetic. | `decided` |
+| **`DEC-0242-NON-MM`** | 2026-10-23 | Power Design directional scroll telemetry & tactile micro-interactions | Adds directional scroll hide/reveal navbar, 3D beacon scroll-velocity/pitch dynamics, click-to-pulse canvas shockwave, interactive KPI click-to-filter, and expandable architecture deep dives. | `decided` |
 
 ---
 
