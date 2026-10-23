@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import AmberBeaconCanvas from './components/canvas/AmberBeaconCanvas.jsx';
 import GlassCard from './components/ui/GlassCard.jsx';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
   ArrowUpRight, 
@@ -18,23 +19,94 @@ import {
   Mail, 
   Linkedin, 
   Github, 
-  Clock 
+  Clock,
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Check,
+  MousePointerClick
 } from 'lucide-react';
 
 export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollVelocity, setScrollVelocity] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState('idle');
+  
+  // Interactive State
+  const [selectedKpi, setSelectedKpi] = useState(null);
+  const [expandedCaseStudies, setExpandedCaseStudies] = useState({});
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedCaseStudy, setCopiedCaseStudy] = useState(null);
+
+  // Directional scroll & velocity tracking
+  const lastScrollY = useRef(0);
+  const lastScrollTime = useRef(performance.now());
+  const scrollTimeoutRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
+      const currentY = window.scrollY;
+      const currentTime = performance.now();
+      const timeDelta = Math.max(1, currentTime - lastScrollTime.current);
+      const scrollDelta = currentY - lastScrollY.current;
+
+      const rawVelocity = Math.abs(scrollDelta) / timeDelta;
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        setScrollProgress(Math.min(1, Math.max(0, window.scrollY / totalHeight)));
-      }
+      const progress = totalHeight > 0 ? Math.min(1, Math.max(0, currentY / totalHeight)) : 0;
+      const direction = scrollDelta > 1 ? 'down' : scrollDelta < -1 ? 'up' : 'idle';
+
+      setScrollProgress(progress);
+      setScrollDirection(direction);
+      setScrollVelocity(Math.min(rawVelocity * 10, 5));
+
+      lastScrollY.current = currentY;
+      lastScrollTime.current = currentTime;
+
+      // Reset velocity when scrolling stops
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        setScrollVelocity(0);
+        setScrollDirection('idle');
+      }, 150);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeoutRef.current);
+    };
   }, []);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('athurnm@gmail.com');
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2200);
+  };
+
+  const handleToggleCaseStudy = (index) => {
+    setExpandedCaseStudies(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
+  const handleKpiClick = (kpiIndex, targetCaseStudyId) => {
+    if (selectedKpi === kpiIndex) {
+      setSelectedKpi(null);
+    } else {
+      setSelectedKpi(kpiIndex);
+      const el = document.getElementById(targetCaseStudyId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  const handleCopyCaseStudy = (index, summaryText) => {
+    navigator.clipboard.writeText(summaryText);
+    setCopiedCaseStudy(index);
+    setTimeout(() => setCopiedCaseStudy(null), 2000);
+  };
 
   const kpis = [
     {
@@ -42,29 +114,34 @@ export default function App() {
       label: "Client Cost Savings",
       sub: "Matchmade enterprise automated reconciliation",
       icon: TrendingUp,
+      targetCaseStudy: "case-study-0"
     },
     {
       metric: "80% Faster",
       label: "Cycle Acceleration",
       sub: "Reconciliation cycle cut from 5 days to 1 day",
       icon: Clock,
+      targetCaseStudy: "case-study-0"
     },
     {
       metric: "+60% CTR",
       label: "Checkout Lift",
       sub: "AdaKerja candidate payment conversion rate",
       icon: Zap,
+      targetCaseStudy: "case-study-2"
     },
     {
       metric: "3x Scale",
       label: "Data Handling",
       sub: "Transaction scale grown from 11 GB to 34 GB/mo",
       icon: Layers,
+      targetCaseStudy: "case-study-0"
     },
   ];
 
   const caseStudies = [
     {
+      id: "case-study-0",
       company: "Matchmade Indonesia",
       badge: "B2B SaaS · Enterprise FinTech",
       role: "Product Manager (2024 — Present)",
@@ -81,8 +158,17 @@ export default function App() {
         "Scaled transaction processing throughput from 11 GB/month to 34 GB/month (3x growth)",
       ],
       tags: ["Reconciliation Engine", "Docling AI", "Enterprise RBAC", "B2B SaaS", "API Integrations"],
+      deepDive: {
+        architecture: "Hybrid stream-processing engine utilizing TanStack virtual tables on the client and chunked DB streaming for multi-million row comparisons.",
+        decisions: [
+          "Selected Docling serverless microservices over legacy OCR models to preserve tabular structure and multi-page financial metadata.",
+          "Introduced deterministic audit logs for reconciliation decisions, passing stringent corporate compliance audits.",
+          "Enforced tenant-isolated Row Level Security (RLS) guaranteeing zero cross-organization ledger leakage."
+        ]
+      }
     },
     {
+      id: "case-study-1",
       company: "PegiPegi",
       badge: "B2C OTA Marketplace",
       role: "Product Manager (2022 — 2023)",
@@ -100,8 +186,17 @@ export default function App() {
         "Slashed 6% of communication costs with WhatsApp alerts achieving a 75% open rate",
       ],
       tags: ["Payment Gateways", "WhatsApp Infrastructure", "Fraud & Deduplication", "CSO Tooling"],
+      deepDive: {
+        architecture: "Asynchronous webhook retry pipeline with idempotent transaction tokens to handle bank gateway timeouts without duplicate charges.",
+        decisions: [
+          "Replaced expensive SMS notification providers with official WhatsApp Business API, boosting open rates to 75% while saving communication costs.",
+          "Implemented heuristic identity deduplication linking phone numbers, payment fingerprints, and device IDs to eliminate spam accounts.",
+          "Constructed internal refund arbitration dashboard reducing CSO turnaround from 3 days to under 4 hours."
+        ]
+      }
     },
     {
+      id: "case-study-2",
       company: "AdaKerja",
       badge: "B2C Job Platform",
       role: "Product Manager (2021 — 2022)",
@@ -116,6 +211,14 @@ export default function App() {
         "Created core product architectures driving scalable active job-seeker engagement",
       ],
       tags: ["Product Strategy", "Funnel Optimization", "Cross-Squad Alignment", "Mobile Checkout"],
+      deepDive: {
+        architecture: "Single-page progressive checkout flow designed for low-bandwidth mobile networks with client-side form caching.",
+        decisions: [
+          "Condensed multi-step checkout into an intuitive single-screen drawer, reducing drop-off across prepaid mobile users.",
+          "Aligned 3 squads under a unified weekly sprint rhythm and clear North Star KPI (verified candidate activations).",
+          "Automated applicant feedback push alerts, driving 35% repeat user sessions."
+        ]
+      }
     },
   ];
 
@@ -151,9 +254,14 @@ export default function App() {
         
         {/* HERO SECTION */}
         <section className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pb-16">
-          <div className="lg:col-span-7 flex flex-col items-start z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 flex flex-col items-start z-10"
+          >
             {/* Monospace Telemetry Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[var(--amber-subtle)] text-[var(--amber-text)] border border-[var(--amber-border)] mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[var(--amber-subtle)] text-[var(--amber-text)] border border-[var(--amber-border)] mb-5 shadow-xs">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--amber-core)] animate-pulse"></span>
               STATUS: AVAILABLE FOR AI PM ROLES
             </div>
@@ -172,24 +280,49 @@ export default function App() {
 
             {/* Hero CTAs */}
             <div className="flex flex-wrap items-center gap-3">
-              <a
+              <motion.a
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 href="mailto:athurnm@gmail.com?subject=%5BInquiry%5D%20AI%20Product%20Manager%20Opportunity"
-                className="px-6 py-3 rounded-full text-sm font-semibold bg-[var(--amber-core)] text-white hover:bg-[var(--amber-glow)] transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+                className="px-6 py-3 rounded-full text-sm font-semibold bg-[var(--amber-core)] text-white hover:bg-[var(--amber-glow)] transition-all shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer interactive-tap"
               >
                 <Mail size={16} />
                 Get in Touch
-              </a>
+              </motion.a>
 
-              <a
+              {/* Instant Interactive Copy Email Button */}
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleCopyEmail}
+                className="px-4 py-3 rounded-full text-sm font-medium bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-hairline)] hover:border-[var(--amber-border)] transition-all flex items-center gap-2 cursor-pointer interactive-tap"
+                aria-label="Copy email address"
+              >
+                {copiedEmail ? (
+                  <>
+                    <Check size={16} className="text-emerald-500" />
+                    <span className="text-emerald-500 font-mono text-xs font-semibold">athurnm@gmail.com copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy size={15} className="text-[var(--text-muted)]" />
+                    <span>Copy Email</span>
+                  </>
+                )}
+              </motion.button>
+
+              <motion.a
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 href="/tools/"
-                className="px-5 py-3 rounded-full text-sm font-semibold bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-hairline)] hover:border-[var(--amber-border)] hover:bg-[var(--bg-surface-elevated)] transition-all flex items-center gap-2"
+                className="px-5 py-3 rounded-full text-sm font-semibold bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-hairline)] hover:border-[var(--amber-border)] hover:bg-[var(--bg-surface-elevated)] transition-all flex items-center gap-2 interactive-tap"
               >
                 <Terminal size={16} className="text-[var(--amber-text)]" />
                 Explore Tools Lab
                 <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-[var(--amber-core)] text-white font-bold">
                   Lab
                 </span>
-              </a>
+              </motion.a>
 
               <a
                 href="https://calendar-snap.vercel.app/"
@@ -208,29 +341,70 @@ export default function App() {
               <span className="inline-block h-2 w-2 rounded-full bg-[var(--amber-glow)]"></span>
               Target Markets: Netherlands · Australia · Indonesia
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: 3D Amber Beacon Canvas */}
-          <div className="lg:col-span-5 relative w-full h-[320px] sm:h-[400px] lg:h-[460px] flex items-center justify-center">
-            <AmberBeaconCanvas scrollProgress={scrollProgress} />
+          <div className="lg:col-span-5 relative w-full h-[320px] sm:h-[400px] lg:h-[460px] flex flex-col items-center justify-center">
+            <AmberBeaconCanvas 
+              scrollProgress={scrollProgress}
+              scrollVelocity={scrollVelocity}
+              scrollDirection={scrollDirection}
+            />
+            {/* Interactive hint */}
+            <div className="absolute bottom-2 text-[10px] font-mono text-[var(--text-muted)] opacity-75 flex items-center gap-1.5 pointer-events-none">
+              <MousePointerClick size={12} className="text-[var(--amber-text)] animate-bounce" />
+              <span>Click beacon to pulse · Scroll up/down to steer</span>
+            </div>
           </div>
         </section>
 
-        {/* KPI TELEMETRY GRID */}
-        <section className="py-10 border-y border-[var(--border-hairline)] mb-16">
+        {/* KPI TELEMETRY GRID WITH CLICK-TO-INSPECT */}
+        <motion.section 
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="py-10 border-y border-[var(--border-hairline)] mb-16"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+              Impact Telemetry // Click metric to inspect source case study
+            </span>
+            {selectedKpi !== null && (
+              <button 
+                onClick={() => setSelectedKpi(null)}
+                className="text-xs font-mono text-[var(--amber-text)] hover:underline cursor-pointer"
+              >
+                Reset Filter ✕
+              </button>
+            )}
+          </div>
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             {kpis.map((kpi, idx) => {
               const Icon = kpi.icon;
+              const isSelected = selectedKpi === idx;
               return (
-                <div 
+                <motion.div 
                   key={idx}
-                  className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-hairline)] flex flex-col justify-between"
+                  whileHover={{ y: -3, scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleKpiClick(idx, kpi.targetCaseStudy)}
+                  className={`p-5 rounded-2xl bg-[var(--bg-surface)] border transition-all duration-200 flex flex-col justify-between cursor-pointer interactive-tap ${
+                    isSelected 
+                      ? 'border-[var(--amber-core)] ring-2 ring-[var(--amber-border)] bg-[var(--bg-surface-elevated)] shadow-md' 
+                      : 'border-[var(--border-hairline)] hover:border-[var(--amber-border)]'
+                  }`}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
+                  aria-label={`Inspect ${kpi.label}`}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-mono font-medium text-[var(--text-muted)]">
                       {kpi.label}
                     </span>
-                    <Icon size={16} className="text-[var(--amber-text)]" />
+                    <Icon size={16} className={isSelected ? 'text-[var(--amber-core)]' : 'text-[var(--amber-text)]'} />
                   </div>
                   <div>
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)] font-mono">
@@ -240,15 +414,25 @@ export default function App() {
                       {kpi.sub}
                     </div>
                   </div>
-                </div>
+                  <div className="mt-3 pt-2 border-t border-[var(--border-hairline)] flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)]">
+                    <span>{isSelected ? 'Active Focus' : 'Click to inspect'}</span>
+                    <span className="text-[var(--amber-text)]">→</span>
+                  </div>
+                </motion.div>
               );
             })}
           </div>
-        </section>
+        </motion.section>
 
         {/* FLAGSHIP CASE STUDIES SECTION */}
         <section className="py-8 mb-20" id="case-studies">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-3"
+          >
             <div>
               <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--amber-text)] mb-2">
                 Proven Track Record
@@ -260,138 +444,254 @@ export default function App() {
             <p className="text-sm text-[var(--text-secondary)] max-w-sm">
               Real problem statements, strategic architectural decisions, and quantifiable business outcomes.
             </p>
-          </div>
+          </motion.div>
 
           <div className="space-y-8">
-            {caseStudies.map((cs, index) => (
-              <GlassCard key={index} className="hover:border-[var(--amber-border)]">
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 border-b border-[var(--border-hairline)] mb-6">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--amber-subtle)] text-[var(--amber-text)] border border-[var(--amber-border)]">
-                        {cs.company}
-                      </span>
-                      <span className="text-xs font-mono text-[var(--text-muted)]">
-                        {cs.badge}
-                      </span>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
-                      {cs.title}
-                    </h3>
-                  </div>
-                  <div className="text-xs font-mono text-[var(--text-muted)] whitespace-nowrap">
-                    {cs.role}
-                  </div>
-                </div>
+            {caseStudies.map((cs, index) => {
+              const isExpanded = !!expandedCaseStudies[index];
+              const isKpiHighlighted = selectedKpi !== null && kpis[selectedKpi]?.targetCaseStudy === cs.id;
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  {/* Problem & Strategy */}
-                  <div className="lg:col-span-7 space-y-4">
-                    <div>
-                      <h4 className="text-xs font-mono font-semibold uppercase text-[var(--text-muted)] mb-1">
-                        The Challenge
-                      </h4>
-                      <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                        {cs.problem}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-xs font-mono font-semibold uppercase text-[var(--text-muted)] mb-2">
-                        Product Strategy & Execution
-                      </h4>
-                      <ul className="space-y-2">
-                        {cs.solution.map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                            <CheckCircle2 size={15} className="text-[var(--amber-text)] shrink-0 mt-0.5" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Measurable Outcomes */}
-                  <div className="lg:col-span-5 p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-hairline)] flex flex-col justify-between">
-                    <div>
-                      <h4 className="text-xs font-mono font-semibold uppercase text-[var(--amber-text)] mb-3 flex items-center gap-1.5">
-                        <TrendingUp size={14} />
-                        Quantifiable Impact
-                      </h4>
-                      <ul className="space-y-2.5">
-                        {cs.outcomes.map((metric, idx) => (
-                          <li key={idx} className="text-xs font-mono font-medium text-[var(--text-primary)] leading-snug">
-                            → {metric}
-                          </li>
-                        ))}
-                      </ul>
+              return (
+                <motion.div
+                  key={index}
+                  id={cs.id}
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <GlassCard 
+                    glow={isKpiHighlighted}
+                    className={`transition-all duration-300 ${
+                      isKpiHighlighted ? 'ring-2 ring-[var(--amber-core)]' : 'hover:border-[var(--amber-border)]'
+                    }`}
+                  >
+                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 border-b border-[var(--border-hairline)] mb-6">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--amber-subtle)] text-[var(--amber-text)] border border-[var(--amber-border)]">
+                            {cs.company}
+                          </span>
+                          <span className="text-xs font-mono text-[var(--text-muted)]">
+                            {cs.badge}
+                          </span>
+                          {isKpiHighlighted && (
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--amber-core)] text-white font-bold animate-pulse">
+                              Filtered Metric Focus
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+                          {cs.title}
+                        </h3>
+                      </div>
+                      <div className="text-xs font-mono text-[var(--text-muted)] whitespace-nowrap">
+                        {cs.role}
+                      </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-1.5 mt-5 pt-4 border-t border-[var(--border-hairline)]">
-                      {cs.tags.map((tag, idx) => (
-                        <span key={idx} className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-canvas)] text-[var(--text-muted)] border border-[var(--border-hairline)]">
-                          {tag}
-                        </span>
-                      ))}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                      {/* Problem & Strategy */}
+                      <div className="lg:col-span-7 space-y-4">
+                        <div>
+                          <h4 className="text-xs font-mono font-semibold uppercase text-[var(--text-muted)] mb-1">
+                            The Challenge
+                          </h4>
+                          <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                            {cs.problem}
+                          </p>
+                        </div>
+
+                        <div>
+                          <h4 className="text-xs font-mono font-semibold uppercase text-[var(--text-muted)] mb-2">
+                            Product Strategy & Execution
+                          </h4>
+                          <ul className="space-y-2">
+                            {cs.solution.map((item, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+                                <CheckCircle2 size={15} className="text-[var(--amber-text)] shrink-0 mt-0.5" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Measurable Outcomes */}
+                      <div className="lg:col-span-5 p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-hairline)] flex flex-col justify-between">
+                        <div>
+                          <h4 className="text-xs font-mono font-semibold uppercase text-[var(--amber-text)] mb-3 flex items-center gap-1.5">
+                            <TrendingUp size={14} />
+                            Quantifiable Impact
+                          </h4>
+                          <ul className="space-y-2.5">
+                            {cs.outcomes.map((metric, idx) => (
+                              <li key={idx} className="text-xs font-mono font-medium text-[var(--text-primary)] leading-snug">
+                                → {metric}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-1.5 mt-5 pt-4 border-t border-[var(--border-hairline)]">
+                          {cs.tags.map((tag, idx) => (
+                            <span key={idx} className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-canvas)] text-[var(--text-muted)] border border-[var(--border-hairline)]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </GlassCard>
-            ))}
+
+                    {/* INTERACTIVE EXPANDABLE ARCHITECTURAL DEEP DIVE */}
+                    <div className="mt-6 pt-5 border-t border-[var(--border-hairline)]">
+                      <div className="flex items-center justify-between flex-wrap gap-3">
+                        <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleToggleCaseStudy(index)}
+                          className="inline-flex items-center gap-2 text-xs font-mono font-semibold text-[var(--amber-text)] hover:text-[var(--amber-glow)] transition-colors cursor-pointer interactive-tap py-1"
+                          aria-expanded={isExpanded}
+                        >
+                          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          <span>{isExpanded ? 'Hide Architecture & Trade-offs' : 'Inspect Architecture & Key Decisions'}</span>
+                        </motion.button>
+
+                        <button
+                          onClick={() => handleCopyCaseStudy(index, `${cs.company} - ${cs.title}\nOutcomes:\n${cs.outcomes.join('\n')}`)}
+                          className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                        >
+                          {copiedCaseStudy === index ? (
+                            <>
+                              <Check size={13} className="text-emerald-500" />
+                              <span className="text-emerald-500">Summary Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={13} />
+                              <span>Copy Outcomes</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            className="overflow-hidden"
+                          >
+                            <div className="mt-4 pt-4 border-t border-[var(--border-hairline)] bg-[var(--bg-surface)] p-5 rounded-2xl border border-[var(--border-hairline)] space-y-4">
+                              <div>
+                                <h5 className="text-xs font-mono font-semibold uppercase text-[var(--amber-text)] mb-1 flex items-center gap-1.5">
+                                  <Cpu size={14} />
+                                  System Architecture & Data Flow
+                                </h5>
+                                <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-mono">
+                                  {cs.deepDive.architecture}
+                                </p>
+                              </div>
+
+                              <div>
+                                <h5 className="text-xs font-mono font-semibold uppercase text-[var(--text-muted)] mb-2">
+                                  Architectural Trade-offs & Decisions
+                                </h5>
+                                <ul className="space-y-1.5">
+                                  {cs.deepDive.decisions.map((dec, dIdx) => (
+                                    <li key={dIdx} className="text-xs text-[var(--text-secondary)] flex items-start gap-2">
+                                      <span className="text-[var(--amber-text)] font-mono font-bold mt-0.5">·</span>
+                                      <span>{dec}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </GlassCard>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
         {/* AI & TECHNICAL PROJECTS */}
         <section className="py-8 mb-20" id="projects">
-          <div className="mb-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.4 }}
+            className="mb-8"
+          >
             <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--amber-text)] mb-2">
               Engineering Fluency
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
               AI & Autonomous Agent Projects
             </h2>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {projects.map((proj, idx) => (
-              <GlassCard key={idx} className="flex flex-col justify-between h-full hover:border-[var(--amber-border)]">
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--amber-subtle)] text-[var(--amber-text)] font-semibold border border-[var(--amber-border)]">
-                      {proj.badge}
-                    </span>
-                    {proj.link && (
-                      <a 
-                        href={proj.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-[var(--text-muted)] hover:text-[var(--amber-text)] transition-colors"
-                        aria-label={`Open ${proj.title}`}
-                      >
-                        <ArrowUpRight size={16} />
-                      </a>
-                    )}
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.45, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -4 }}
+                className="h-full"
+              >
+                <GlassCard className="flex flex-col justify-between h-full hover:border-[var(--amber-border)] transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--amber-subtle)] text-[var(--amber-text)] font-semibold border border-[var(--amber-border)]">
+                        {proj.badge}
+                      </span>
+                      {proj.link && (
+                        <a 
+                          href={proj.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-[var(--text-muted)] hover:text-[var(--amber-text)] transition-colors p-1"
+                          aria-label={`Open ${proj.title}`}
+                        >
+                          <ArrowUpRight size={16} />
+                        </a>
+                      )}
+                    </div>
+
+                    <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
+                      {proj.title}
+                    </h3>
+
+                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-4">
+                      {proj.desc}
+                    </p>
                   </div>
 
-                  <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
-                    {proj.title}
-                  </h3>
-
-                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-4">
-                    {proj.desc}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-[var(--border-hairline)] text-[11px] font-mono text-[var(--text-muted)]">
-                  {proj.stack}
-                </div>
-              </GlassCard>
+                  <div className="pt-3 border-t border-[var(--border-hairline)] text-[11px] font-mono text-[var(--text-muted)]">
+                    {proj.stack}
+                  </div>
+                </GlassCard>
+              </motion.div>
             ))}
           </div>
         </section>
 
         {/* MICRO-TOOLS LAB BANNER */}
-        <section className="mb-20">
+        <motion.section 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.45 }}
+          className="mb-20"
+        >
           <GlassCard glow className="relative overflow-hidden p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="max-w-xl">
               <div className="flex items-center gap-2 mb-2">
@@ -408,19 +708,27 @@ export default function App() {
               </p>
             </div>
 
-            <a
+            <motion.a
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               href="/tools/"
-              className="px-6 py-3 rounded-full text-sm font-semibold bg-[var(--amber-core)] text-white hover:bg-[var(--amber-glow)] transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap cursor-pointer"
+              className="px-6 py-3 rounded-full text-sm font-semibold bg-[var(--amber-core)] text-white hover:bg-[var(--amber-glow)] transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap cursor-pointer interactive-tap"
             >
               <Terminal size={16} />
               Open Tools Lab
               <ArrowUpRight size={14} />
-            </a>
+            </motion.a>
           </GlassCard>
-        </section>
+        </motion.section>
 
         {/* COMPETENCIES & EDUCATION */}
-        <section className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+        <motion.section 
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5 }}
+          className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8 mb-20"
+        >
           {/* Competencies */}
           <GlassCard>
             <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-[var(--amber-text)] mb-3">
@@ -478,7 +786,7 @@ export default function App() {
               </div>
             </div>
           </GlassCard>
-        </section>
+        </motion.section>
 
       </main>
 

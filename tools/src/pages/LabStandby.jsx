@@ -1,12 +1,18 @@
 import React from 'react';
 import { blueprintTools } from '../registry.js';
 import { Terminal, ArrowRight, Sparkles, Cpu, Layers, ShieldCheck } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export default function LabStandby({ onSelectTool }) {
   return (
     <div className="space-y-12">
       {/* Standby Header & Architectural Banner */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 border-[var(--amber-border)] amber-halo">
+      <motion.div 
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="glass-panel rounded-3xl p-6 sm:p-8 border-[var(--amber-border)] amber-halo"
+      >
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[var(--border-hairline)] mb-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[var(--amber-subtle)] text-[var(--amber-text)] border border-[var(--amber-border)] mb-3">
@@ -41,7 +47,7 @@ export default function LabStandby({ onSelectTool }) {
             <span>Zero Server Secret Leakage</span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Blueprint Tool Cards Grid */}
       <section>
@@ -55,11 +61,16 @@ export default function LabStandby({ onSelectTool }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {blueprintTools.map((tool) => (
-            <div
+          {blueprintTools.map((tool, idx) => (
+            <motion.div
               key={tool.slug}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => onSelectTool(tool.slug)}
-              className="glass-panel rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:border-[var(--amber-border)] transition-all duration-300 group cursor-pointer hover:shadow-lg"
+              className="glass-panel rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:border-[var(--amber-border)] transition-all duration-300 group cursor-pointer hover:shadow-lg interactive-tap"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -83,8 +94,8 @@ export default function LabStandby({ onSelectTool }) {
                   <div className="text-[10px] font-mono font-semibold uppercase text-[var(--text-muted)] mb-1">
                     Planned Capabilities:
                   </div>
-                  {tool.blueprintFeatures.map((feat, idx) => (
-                    <div key={idx} className="text-[11px] text-[var(--text-muted)] flex items-start gap-1.5">
+                  {tool.blueprintFeatures.map((feat, bIdx) => (
+                    <div key={bIdx} className="text-[11px] text-[var(--text-muted)] flex items-start gap-1.5">
                       <span className="text-[var(--amber-text)]">·</span>
                       <span className="line-clamp-1">{feat}</span>
                     </div>
@@ -100,13 +111,13 @@ export default function LabStandby({ onSelectTool }) {
 
                 <button
                   type="button"
-                  className="p-2 rounded-full bg-[var(--bg-surface)] text-[var(--text-secondary)] group-hover:bg-[var(--amber-core)] group-hover:text-white transition-colors"
+                  className="p-2 rounded-full bg-[var(--bg-surface)] text-[var(--text-secondary)] group-hover:bg-[var(--amber-core)] group-hover:text-white transition-colors cursor-pointer"
                   aria-label={`Open ${tool.title} container`}
                 >
                   <ArrowRight size={14} />
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

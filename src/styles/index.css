@@ -58,3 +58,22 @@ code, pre, .font-mono {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--amber-core);
 }
+
+/* Reduced Motion Override (WCAG 2.2 §2.3.3 / Power Design Rule #15) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Tactile Active States */
+.interactive-tap {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+}
+.interactive-tap:active {
+  transform: scale(0.97);
+}
+

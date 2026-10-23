@@ -3,7 +3,12 @@ import { Canvas } from '@react-three/fiber';
 import BeaconScene from './BeaconScene.jsx';
 import BeaconPoster from './BeaconPoster.jsx';
 
-export default function AmberBeaconCanvas({ scrollProgress = 0, className = '' }) {
+export default function AmberBeaconCanvas({ 
+  scrollProgress = 0, 
+  scrollVelocity = 0,
+  scrollDirection = 'idle',
+  className = '' 
+}) {
   const [eligible, setEligible] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -38,11 +43,15 @@ export default function AmberBeaconCanvas({ scrollProgress = 0, className = '' }
           camera={{ position: [0, 0, 5], fov: 45 }}
           gl={{ powerPreference: 'high-performance', antialias: true }}
           onError={() => setHasError(true)}
-          className="w-full h-full"
+          className="w-full h-full cursor-pointer"
         >
           <ambientLight intensity={0.6} />
           <pointLight position={[5, 5, 5]} intensity={1.5} color="#FBBF24" />
-          <BeaconScene scrollProgress={scrollProgress} />
+          <BeaconScene 
+            scrollProgress={scrollProgress} 
+            scrollVelocity={scrollVelocity}
+            scrollDirection={scrollDirection}
+          />
         </Canvas>
       </Suspense>
     </div>
