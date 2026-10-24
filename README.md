@@ -51,7 +51,7 @@ portfolio_UOR_SERVICE/
 │   │   ├── canvas/             # BeaconMount (lazy gate), BeaconScene, BeaconPoster
 │   │   ├── diagrams/           # 6 inline SVG diagrams + shared primitives
 │   │   ├── layout/             # Navbar, Footer
-│   │   ├── ui/                 # Reveal, Metric, Disclosure
+│   │   ├── ui/                 # Reveal, Metric, Disclosure, SplitText
 │   │   └── CompanyCarousel.jsx # pinned, scroll-driven, three render modes
 │   ├── content/profile.js      # SINGLE SOURCE for all portfolio content
 │   ├── hooks/                  # useFocusTrap, useScrollProgress

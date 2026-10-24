@@ -9,6 +9,7 @@ import Disclosure from './components/ui/Disclosure.jsx';
 import CareerTimeline from './components/diagrams/CareerTimeline.jsx';
 import CapabilityStack from './components/diagrams/CapabilityStack.jsx';
 import ToolsArchitecture from './components/diagrams/ToolsArchitecture.jsx';
+import SplitText from './components/ui/SplitText.jsx';
 import useScrollProgress from './hooks/useScrollProgress.js';
 import { profile, impactMetrics, projects, education } from './content/profile.js';
 import { blueprintTools } from '../tools/src/registry.js';
@@ -30,9 +31,9 @@ export default function App() {
               <p className="label">
                 {profile.name} · {profile.role}
               </p>
-              <h1 id="hero-title" className="display" style={{ marginTop: '0.75rem' }}>
+              <SplitText as="h1" id="hero-title" className="display" style={{ marginTop: '0.75rem' }} delay={0.1}>
                 {profile.claim}
-              </h1>
+              </SplitText>
               <p className="body-copy" style={{ marginTop: '1.25rem', maxWidth: '34rem' }}>
                 {profile.summary}
               </p>
@@ -55,7 +56,7 @@ export default function App() {
           </div>
 
           <p className="identifier" style={{ marginTop: '2.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--hairline)' }}>
-            {profile.location} · Netherlands, Australia, Indonesia · visa sponsorship needed
+            {profile.location} · {profile.availability}
           </p>
         </section>
 
@@ -83,9 +84,9 @@ export default function App() {
         {/* 3. Career arc. The five-year story as a timeline, not a paragraph. */}
         <Reveal as="section" className="shell" style={{ paddingBlock: '4.5rem' }} aria-labelledby="arc-title">
           <div style={{ maxWidth: '40rem' }}>
-            <h2 id="arc-title" className="section-title">
+            <SplitText as="h2" id="arc-title" className="section-title">
               Five years, one direction
-            </h2>
+            </SplitText>
             <p className="body-copy" style={{ marginTop: '0.75rem' }}>
               Consumer funnels, then payments, then enterprise reconciliation. Each move went toward systems where a
               wrong number costs real money and the fix has to survive an audit.
@@ -99,9 +100,9 @@ export default function App() {
         {/* 4. Selected work. Pinned carousel, one company per screen. */}
         <section id="work" aria-labelledby="work-title">
           <div className="shell" style={{ paddingBottom: '2rem' }}>
-            <h2 id="work-title" className="section-title">
+            <SplitText as="h2" id="work-title" className="section-title">
               Selected work
-            </h2>
+            </SplitText>
             <p className="body-copy" style={{ marginTop: '0.75rem', maxWidth: '34rem' }}>
               One company at a time. Scroll to move between them, or use the controls.
             </p>
@@ -112,9 +113,9 @@ export default function App() {
         {/* 5. Capability. One stack diagram, then the things I built for myself. */}
         <Reveal as="section" className="shell" style={{ paddingBlock: '4.5rem' }} aria-labelledby="cap-title">
           <div style={{ maxWidth: '40rem' }}>
-            <h2 id="cap-title" className="section-title">
+            <SplitText as="h2" id="cap-title" className="section-title">
               How the work gets built
-            </h2>
+            </SplitText>
             <p className="body-copy" style={{ marginTop: '0.75rem' }}>
               The top layer is judgement. The three below it are what I use to prove a judgement call works before
               asking a team to commit to it.
@@ -138,9 +139,9 @@ export default function App() {
             </Disclosure>
           </div>
 
-          <h3 className="subsection-title" style={{ marginTop: '3rem' }}>
+          <SplitText as="h3" className="subsection-title" style={{ marginTop: '3rem' }}>
             Built independently
-          </h3>
+          </SplitText>
           <ul style={{ padding: 0, margin: '1rem 0 0', listStyle: 'none' }}>
             {projects.map((project) => (
               <li key={project.title} className="list-row">
@@ -171,9 +172,9 @@ export default function App() {
         <Reveal as="section" className="shell" style={{ paddingBlock: '4.5rem' }} aria-labelledby="lab-title">
           <div className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-6">
-              <h2 id="lab-title" className="section-title">
+              <SplitText as="h2" id="lab-title" className="section-title">
                 The tools lab
-              </h2>
+              </SplitText>
               <p className="body-copy" style={{ marginTop: '0.75rem', maxWidth: '32rem' }}>
                 Three utilities I need often enough to build. They run as a separate app, so an experiment that breaks
                 cannot take the portfolio with it.
@@ -184,7 +185,9 @@ export default function App() {
             </div>
 
             <div className="lg:col-span-6">
-              <h3 className="subsection-title">In development</h3>
+              <SplitText as="h3" className="subsection-title">
+                In development
+              </SplitText>
               <ul style={{ padding: 0, margin: '1rem 0 0', listStyle: 'none' }}>
                 {blueprintTools.map((tool) => (
                   <li key={tool.slug} className="list-row">
@@ -213,9 +216,9 @@ export default function App() {
 
         {/* 7. Contact. The quietest section, set large. */}
         <Reveal as="section" className="shell" style={{ paddingBlock: '5rem 6rem', textAlign: 'center' }} aria-labelledby="contact-title">
-          <h2 id="contact-title" className="section-title" style={{ maxWidth: '36rem', marginInline: 'auto' }}>
+          <SplitText as="h2" id="contact-title" className="section-title" style={{ maxWidth: '36rem', marginInline: 'auto' }}>
             Available for AI product manager roles
-          </h2>
+          </SplitText>
           <p className="body-copy" style={{ marginTop: '1rem', maxWidth: '34rem', marginInline: 'auto' }}>
             {profile.availability}
           </p>

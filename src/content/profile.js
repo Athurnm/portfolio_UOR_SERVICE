@@ -10,7 +10,7 @@ export const profile = {
   summary:
     'Five years of product leadership across enterprise B2B SaaS, a consumer travel marketplace, and a blue-collar recruitment platform. Information Systems foundation from ITB. I write the roadmap, then ship the prototype that de-risks it.',
   location: 'Jakarta, Indonesia (WIB / UTC+7)',
-  availability: 'Open to relocation to the Netherlands, Australia, or Indonesia. Requires visa sponsorship.',
+  availability: 'Currrently in Indonesia, Open to relocation to the Netherlands, Australia, or Singapore. Requires visa sponsorship (aside Indonesia).',
   email: 'athurnm@gmail.com',
   emailSubject: '[Inquiry] AI Product Manager opportunity',
   links: {
@@ -142,8 +142,8 @@ export const companies = [
 export const timeline = [
   { period: '2021', org: 'AdaKerja', role: 'Product Manager', focus: 'Checkout funnel and squad alignment' },
   { period: '2022', org: 'PegiPegi', role: 'Product Manager', focus: 'Payment channels and transaction messaging' },
-  { period: '2024', org: 'Matchmade', role: 'Product Manager', focus: 'Reconciliation engine and AI extraction' },
-  { period: 'Now', org: 'Independent', role: 'Builder', focus: 'Agent workflows and micro-tools' },
+  { period: '2024 - Now', org: 'Matchmade', role: 'Product Manager', focus: 'Reconciliation engine and AI extraction' },
+  { period: 'And (Now)', org: 'Personal Project', role: 'Product Builder', focus: 'Agent workflows and micro-tools' },
 ];
 
 export const capabilityLayers = [

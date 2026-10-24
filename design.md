@@ -223,14 +223,22 @@ Each company panel carries, in place of paragraphs:
 
 | Motion | Where | Duration and easing | Purpose |
 | :--- | :--- | :--- | :--- |
+| Split-Text & Staggered Reveal | All section headings (`h1`, `h2`, `h3`) | Stagger `0.02s` per character, `620ms` `translateY(125%)` to `0`, `cubic-bezier(0.16, 1, 0.3, 1)` | Text emerges from invisible overflow boundaries (`overflow: hidden`) on viewport entry |
 | Pinned carousel tracking scroll | Section 3 | Tied to scroll position, no easing | Position feedback: which company you are reading |
 | Reveal (opacity 0 to 1, `translateY 12px` to 0) | Once per viewport, on the section's first entry | 420ms, `cubic-bezier(0.16, 1, 0.3, 1)` | Separates chapter starts, nothing more |
 | Hover (border to `--hairline-strong`, text to `--text-primary`) | Interactive elements | 140ms linear | Affordance |
 | Clipboard confirmation | Copy buttons | 200ms fade | State feedback |
 
+### 7.1 Split-Text & Staggered Reveal Specification
+
+Text rarely appears statically. Headings split into individual characters or word spans (`gsap.from(chars, { yPercent: 120, stagger: 0.02 })`), emerging from invisible overflow boundaries (`overflow: hidden`).
+- **DOM Architecture**: The heading root holds `aria-label` with the full untruncated text, while inner spans carry `aria-hidden="true"`. Each word is wrapped in an inline-block `.split-word-mask` with `overflow: hidden; white-space: nowrap; vertical-align: bottom;` and descender margin/padding compensation (`padding-bottom: 0.15em; margin-bottom: -0.15em;`).
+- **Character Reveal**: Inner `.split-char` spans start at `transform: translateY(125%); opacity: 0;` and transition to `transform: translateY(0); opacity: 1;` with a continuous stagger of `0.02s` per character across words, timed with ease `cubic-bezier(0.16, 1, 0.3, 1)` over 620ms.
+- **Accessibility & Reduced Motion**: Under `prefers-reduced-motion: reduce`, all character transforms and transitions are bypassed immediately (`transform: none !important; opacity: 1 !important;`), ensuring instant, readable rendering. Screen readers read the intact heading via `aria-label`.
+
 **Removed:** `animate-ping`, `animate-pulse`, `animate-bounce`, `whileHover` scale and lift on every card, `hover:rotate-45` on the theme toggle, staggered fade-up on every single block.
 
-**`prefers-reduced-motion: reduce`:** the carousel becomes a stacked list of three panels, the reveal is skipped, and no transform runs. This is a rendering path, not a CSS override.
+**`prefers-reduced-motion: reduce`:** the carousel becomes a stacked list of three panels, the reveal and split-text transforms are skipped, and no transform runs. This is a rendering path, not a CSS override.
 
 ---
 
