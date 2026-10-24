@@ -14,7 +14,7 @@
 | Sanitization | `rehype-raw` + `rehype-sanitize` + `DOMPurify` | `react-markdown` + `rehype-sanitize` only |
 | 3D budget | `<150KB` gz | `<=280KB` gz, gated, with poster fallback |
 | Versions | Hard-coded majors | Latest stable at scaffold time, pinned by lockfile |
-| Content | `profile.md` assumed | Curated public `src/content/profile.md`, validation and redaction check at build |
+| Content | `profile.md` assumed | Curated public `src/content/profile.js`, structured so diagrams and metrics can read it |
 | Risk handling | none | Spike S0 for bracketed path before anything else |
 
 ---
@@ -56,7 +56,7 @@ This directory is the git root and the portfolio app root. It already contains p
 │   └── assemble-artifact.mjs           # copies tools/dist -> dist/tools, verifies both index.html
 ├── src/
 │   ├── components/{canvas,layout,ui}/  # Beacon (lazy), Navbar, Footer, GlassCard, MarkdownRenderer, BeaconPoster.svg
-│   ├── content/profile.md              # PUBLIC curated content only
+│   ├── content/profile.js              # PUBLIC curated content only, structured
 │   ├── pages/{PortfolioPage,NotFoundPage}.jsx
 │   ├── hooks/{useScrollProgress,useViewportRatio,useBeaconEligibility}.js
 │   ├── styles/{tokens.css,index.css}   # tokens shared with tools app
@@ -112,7 +112,7 @@ Estimates are solo-developer working days (Phase 1 target: 10).
 | ID | Task | Exit Criteria |
 | :--- | :--- | :--- |
 | P1 | Navbar (desktop pill, mobile menu sheet, skip link, Contact popover) | TC-04 |
-| P2 | `PortfolioPage` renders `profile.md` sections; bento/timeline layout; `<noscript>` block | TC-01, TC-03, TC-16 |
+| P2 | `App.jsx` renders the seven sections from `profile.js`; timeline and stack diagrams; `<noscript>` block | TC-01, TC-03, TC-16 |
 | P3 | 404 page (`noindex`) | E1 |
 | P4 | Content authoring: 3 case studies, KPIs with sources, redaction pass | Owner sign-off (content gate) |
 | P5 | Static SEO: meta, OG image, canonical, `sitemap.xml`, `robots.txt` | TC-12 |
@@ -274,7 +274,7 @@ jobs:
 3. **No client secrets**: never put OpenAI/Anthropic keys in `VITE_*`. For AI tools use either (a) bring-your-own-key kept in memory only (never persisted, never logged), or (b) a rate-limited proxy (Cloudflare Worker or serverless function) designed in that tool's own PRD.
 4. **Headers/CSP**: enforced by Netlify `_headers` (Section 4.3). Any new third-party origin requires a CSP edit and a PRD note.
 5. **Supply chain**: lockfile committed, Dependabot weekly, `npm audit --audit-level=high` in CI.
-6. **Publishing governance**: public content lives in `src/content/profile.md`, synthesized from approved CV and profile items.
+6. **Publishing governance**: public content lives in `src/content/profile.js`, synthesized from approved CV and profile items.
 
 ---
 

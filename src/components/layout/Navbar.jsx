@@ -266,7 +266,7 @@ export default function Navbar({ activePage = 'portfolio' }) {
 
       {sheetOpen ? (
         <div role="presentation" style={{ position: 'fixed', inset: 0, zIndex: 45 }}>
-          <div onClick={closeSheet} aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)' }} />
+          <div onClick={closeSheet} aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
           <div
             ref={sheetRef}
             role="dialog"
@@ -276,11 +276,13 @@ export default function Navbar({ activePage = 'portfolio' }) {
             style={{
               position: 'absolute',
               top: '4.75rem',
-              left: '1rem',
-              right: '1rem',
-              padding: '1rem',
+              left: '0.75rem',
+              right: '0.75rem',
+              padding: '1.25rem',
               background: 'var(--bg-raised)',
               boxShadow: 'var(--shadow-popover)',
+              maxHeight: 'calc(100vh - 6rem)',
+              overflowY: 'auto',
             }}
           >
             <div className="stack-2">
@@ -297,9 +299,92 @@ export default function Navbar({ activePage = 'portfolio' }) {
               >
                 Tools lab
               </a>
-              <a href={mailto} onClick={closeSheet} style={sheetLink(false)}>
-                Email {profile.email}
-              </a>
+            </div>
+
+            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--hairline)' }}>
+              <span className="label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.625rem' }}>
+                Contact & Profiles
+              </span>
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '0.5rem',
+                  padding: '0.5rem 0.625rem',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--bg-surface)',
+                  border: '1px solid var(--hairline)',
+                  marginBottom: '0.75rem',
+                }}
+              >
+                <span
+                  className="identifier"
+                  style={{ color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                >
+                  {profile.email}
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-quiet"
+                  style={{ minHeight: 34, padding: '0 0.625rem', fontSize: '0.75rem', flexShrink: 0 }}
+                  onClick={copyEmail}
+                >
+                  {copied ? (
+                    <Check size={13} aria-hidden="true" style={{ color: 'var(--signal-ok)' }} />
+                  ) : (
+                    <Copy size={13} aria-hidden="true" />
+                  )}
+                  {copied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+
+              <div className="stack-2">
+                <a
+                  href={mailto}
+                  onClick={() => {
+                    track('cta_contact_email_click', 'mobile_sheet');
+                    closeSheet();
+                  }}
+                  className="btn btn-primary"
+                  style={{ width: '100%', justifyContent: 'center', minHeight: 40 }}
+                >
+                  Email me about a role
+                </a>
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.25rem' }}>
+                  <a
+                    href={profile.links.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      track('cta_contact_linkedin_click', 'mobile_sheet');
+                      closeSheet();
+                    }}
+                    className="btn btn-quiet"
+                    style={{ flex: 1, justifyContent: 'center', minHeight: 38, fontSize: '0.8125rem' }}
+                  >
+                    LinkedIn
+                  </a>
+                  <a
+                    href={profile.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      track('cta_contact_github_click', 'mobile_sheet');
+                      closeSheet();
+                    }}
+                    className="btn btn-quiet"
+                    style={{ flex: 1, justifyContent: 'center', minHeight: 38, fontSize: '0.8125rem' }}
+                  >
+                    GitHub
+                  </a>
+                </div>
+              </div>
+
+              <p className="identifier" style={{ marginTop: '0.875rem', textAlign: 'center', fontSize: '0.6875rem' }}>
+                {profile.location} · Visa sponsorship needed
+              </p>
             </div>
           </div>
         </div>

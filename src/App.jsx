@@ -35,7 +35,7 @@ export default function App() {
               <p className="body-copy" style={{ marginTop: '1.25rem', maxWidth: '34rem' }}>
                 {profile.summary}
               </p>
-              <div className="flex flex-wrap items-center" style={{ gap: '0.75rem', marginTop: '2rem' }}>
+              <div className="hero-actions">
                 <a className="btn btn-primary" href={mailto}>
                   Email me about a role
                 </a>
@@ -48,7 +48,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="lg:col-span-5" style={{ height: 'clamp(200px, 32vh, 320px)' }}>
+            <div className="lg:col-span-5" style={{ height: 'clamp(180px, 24vh, 260px)' }}>
               <BeaconMount scrollProgress={progress} />
             </div>
           </div>

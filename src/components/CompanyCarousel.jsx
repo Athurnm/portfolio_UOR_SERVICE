@@ -81,8 +81,8 @@ function Panel({ company, index }) {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(9rem, 1fr))',
-            gap: '1.5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(7.5rem, 1fr))',
+            gap: '1rem',
             marginTop: '1.75rem',
             paddingTop: '1.5rem',
             borderTop: '1px solid var(--hairline)',
@@ -143,9 +143,13 @@ export default function CompanyCarousel() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const [swipeIndex, setSwipeIndex] = useState(0);
 
-  const activeIndex = Math.min(COUNT - 1, Math.max(0, Math.round(progress * (COUNT - 1))));
+  const activeIndex = mode === 'pin'
+    ? Math.min(COUNT - 1, Math.max(0, Math.round(progress * (COUNT - 1))))
+    : swipeIndex;
 
+  // Pin mode scroll reader
   useEffect(() => {
     if (mode !== 'pin') {
       setProgress(0);
@@ -178,6 +182,22 @@ export default function CompanyCarousel() {
     };
   }, [mode]);
 
+  // Swipe mode scroll listener to sync activeIndex and dots
+  const onSwipeScroll = useCallback(() => {
+    const el = trackRef.current;
+    if (!el || el.clientWidth === 0) return;
+    const index = Math.round(el.scrollLeft / el.clientWidth);
+    setSwipeIndex(Math.min(COUNT - 1, Math.max(0, index)));
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (mode === 'swipe' && track) {
+      track.addEventListener('scroll', onSwipeScroll, { passive: true });
+      return () => track.removeEventListener('scroll', onSwipeScroll);
+    }
+  }, [mode, onSwipeScroll]);
+
   const goTo = useCallback(
     (target) => {
       const index = Math.min(Math.max(target, 0), COUNT - 1);
@@ -193,7 +213,10 @@ export default function CompanyCarousel() {
         const track = trackRef.current;
         if (!track) return;
         const panel = track.children[index];
-        if (panel) track.scrollTo({ left: panel.offsetLeft, behavior: 'smooth' });
+        if (panel) {
+          track.scrollTo({ left: panel.offsetLeft, behavior: 'smooth' });
+          setSwipeIndex(index);
+        }
       }
     },
     [mode]
@@ -253,12 +276,52 @@ export default function CompanyCarousel() {
         onKeyDown={onKeyDown}
         style={{ outlineOffset: '4px' }}
       >
+        {/* Company Quick-Selector Pills for Mobile */}
+        <div className="shell" style={{ marginBottom: '1rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.5rem',
+              overflowX: 'auto',
+              scrollbarWidth: 'none',
+              paddingBottom: '0.25rem',
+            }}
+          >
+            {companies.map((company, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <button
+                  key={company.id}
+                  type="button"
+                  onClick={() => goTo(index)}
+                  style={{
+                    padding: '0.375rem 0.875rem',
+                    borderRadius: 'var(--radius-pill)',
+                    fontSize: '0.8125rem',
+                    fontWeight: isActive ? 600 : 500,
+                    whiteSpace: 'nowrap',
+                    background: isActive ? 'var(--accent-wash)' : 'var(--bg-surface)',
+                    color: isActive ? 'var(--accent-ink)' : 'var(--text-secondary)',
+                    border: `1px solid ${isActive ? 'var(--accent-fill)' : 'var(--hairline)'}`,
+                    cursor: 'pointer',
+                    minHeight: '36px',
+                    transition: 'all 140ms linear',
+                  }}
+                  aria-current={isActive ? 'true' : undefined}
+                >
+                  {company.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <div className="carousel-swipe" ref={trackRef}>
           {companies.map((company, index) => (
             <Panel key={company.id} company={company} index={index} />
           ))}
         </div>
-        <div className="carousel-controls">
+        <div className="carousel-controls shell">
           {controls}
           <Dots activeIndex={activeIndex} goTo={goTo} />
         </div>

@@ -349,10 +349,10 @@ The following decisions are formally recorded in `journal/state/decisions.json` 
 | ID | Date | Decision Summary | Rationale | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **`DEC-0235-NON-MM`** | 2026-10-23 | Decoupled two-tier architecture: Root Portfolio SPA (`/`) + Independent Tools SPA (`/tools/`) | Isolates experimental tool scripts from the main portfolio shell and guarantees zero crash cross-contamination. | `decided` |
-| **`DEC-0236-NON-MM`** | 2026-10-23 | Tech Stack: JavaScript ESNext, React 19, Vite 6, Tailwind CSS v4, Three.js Beacon | Maximizes build speed, compatibility, and adheres to owner language preference. | `decided` |
+| **`DEC-0236-NON-MM`** | 2026-10-23 | Tech Stack: JavaScript ESNext, React 19, Vite 6, Tailwind CSS v4, Three.js Beacon | Maximizes build speed, compatibility, and adheres to owner language preference. React 19 was the plan; the build shipped React 18.3.1, see Section 9. | `decided, version corrected in V4` |
 | **`DEC-0237-NON-MM`** | 2026-10-23 | Netlify edge deployment with redirect from `https://athur-exp-bot.tech/` | Replaces Hostinger shared hosting; leverages Netlify automated SPA routing and edge CDN. | `decided` |
 | **`DEC-0238-NON-MM`** | 2026-10-23 | Dedicated Git repository connected to `https://github.com/Athurnm/portfolio_UOR_SERVICE.git` | Enforces personal private repository boundary rule without polluting parent workspace Git. | `decided` |
-| **`DEC-0239-NON-MM`** | 2026-10-23 | SSOT career data integration from `profile.md` and `cv-athur-ai-product-manager.md` | Populates verified high-impact metrics (IDR 1.2B savings, +60% CTR, 3x data scale) and AI credentials. | `decided` |
+| **`DEC-0239-NON-MM`** | 2026-10-23 | SSOT career data integration from the CV and profile sources | Populates verified high-impact metrics (IDR 1.2B savings, +60% CTR, 11 to 34 GB per month) and AI credentials. The source moved to `src/content/profile.js` in DEC-0244. | `decided, source moved in V4` |
 | **`DEC-0240-NON-MM`** | 2026-10-23 | Personal conversion metrics: Total Page Views & up to 30% email conversion rate within 2 months | Replaces corporate B2B metrics with actionable personal career milestones. | `decided` |
 | **`DEC-0241-NON-MM`** | 2026-10-23 | Amber Beacon design tokens with accessible `--amber-text` token separation | Enforces WCAG 2.2 AA contrast compliance while preserving glowing amber aesthetic. | `decided` |
 | **`DEC-0242-NON-MM`** | 2026-10-23 | Power Design directional scroll telemetry & tactile micro-interactions | Adds directional scroll hide/reveal navbar, 3D beacon scroll-velocity/pitch dynamics, click-to-pulse canvas shockwave, interactive KPI click-to-filter, and expandable architecture deep dives. | `superseded by DEC-0243` |
@@ -364,13 +364,15 @@ The following decisions are formally recorded in `journal/state/decisions.json` 
 | **`DEC-0248-NON-MM`** | 2026-10-24 | The 3D chunk sits behind a four-gate lazy mount | 223 KB gzipped must never be on the critical path. `BeaconMount` checks WebGL, reduced motion, saveData, and idle before importing. | `decided` |
 | **`DEC-0249-NON-MM`** | 2026-10-24 | Anti-slop audit #002 is the acceptance gate for this build | 34 findings, all approved and closed. The follow-up report records the evidence per finding. | `decided` |
 | **`DEC-0250-NON-MM`** | 2026-10-24 | `?theme=light` and `?theme=dark` override the stored theme for one page load | Makes a shared link open in the intended theme and makes visual review reproducible, without writing to `localStorage`. | `decided` |
+| **`DEC-0251-NON-MM`** | 2026-10-24 | Mobile smartphone viewport responsiveness optimization (320px–414px) | Solves unreadable SVG text collapsing by implementing dual-diagram paths (vertical step rail in CareerTimeline, card stack in CapabilityStack), overflow panning container with touch cue (.diagram-scroll-wrapper with min-width 520px in DiagramFrame), swipe scroll tracking + quick tabs in CompanyCarousel, compact 2x2 impact grid, and vertical hero actions. | `decided` |
+
 
 ---
 
 ## 8. Owner Confirmations & Execution Clearance
 
 All initial planning inquiries have been resolved:
-1. **Language**: Confirmed **JavaScript** (ESNext, React 19, Vite 6).
+1. **Language**: Confirmed **JavaScript** (ESNext, Vite 6). The build runs React 18.3.1; the React 19 plan in DEC-0236 was not executed.
 2. **Domain & Hosting**: Confirmed **Netlify** edge hosting with redirect from apex domain `https://athur-exp-bot.tech/`.
 3. **Repository Remote**: Confirmed personal private GitHub repository `https://github.com/Athurnm/portfolio_UOR_SERVICE.git`.
 4. **Primary Conversion Target**: Confirmed total page views and up to 30% email conversion rate.
