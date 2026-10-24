@@ -660,3 +660,146 @@ button {
     justify-content: center;
   }
 }
+
+/* Brand handle beside sticky title */
+.nav-brand-handle {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+  transition: color 140ms linear;
+}
+
+.nav-brand:hover .nav-brand-handle {
+  color: var(--amber-text);
+}
+
+@media (max-width: 375px) {
+  .nav-brand-handle {
+    display: none;
+  }
+}
+
+/* Company case-study logo badge and watermark */
+.company-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--hairline);
+  height: 32px;
+  max-width: 120px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+}
+
+.company-logo-img {
+  max-height: 20px;
+  max-width: 95px;
+  object-fit: contain;
+  opacity: 0.72;
+  filter: grayscale(0.25);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.carousel-panel:hover .company-logo-img,
+.company-logo-badge:hover .company-logo-img {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.company-watermark {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  height: 72px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+  filter: grayscale(1);
+  transition: opacity 0.3s ease;
+}
+
+[data-theme='dark'] .company-watermark {
+  opacity: 0.12;
+  filter: grayscale(1) brightness(1.6);
+}
+
+/* Company operational status badge / link */
+.company-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.company-status-pill--active {
+  background: var(--accent-wash);
+  color: var(--amber-text);
+  border: 1px solid var(--accent-glow);
+}
+
+.company-status-pill--active:hover {
+  background: var(--amber-glow);
+  color: var(--text-primary);
+}
+
+.company-status-pill--inactive {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  border: 1px solid var(--hairline);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-dot--active {
+  background: var(--accent-fill);
+  box-shadow: 0 0 6px var(--accent-fill);
+}
+
+.status-dot--inactive {
+  background: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* SVG Accented connector flow animation */
+.animated-flow-stroke {
+  animation: connectorFlow 1.4s linear infinite;
+}
+
+@keyframes connectorFlow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-flow-stroke {
+    animation: none;
+    stroke-dasharray: none;
+  }
+  .connector-moving-arrow {
+    display: none;
+  }
+}
+

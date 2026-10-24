@@ -65,8 +65,47 @@ export function Node({ x, y, w, h, label, sub, accent = false, center = false })
   );
 }
 
-export function Connector({ d, accent = false, dashed = false, prefix }) {
+export function Connector({ d, accent = false, dashed = false, prefix, animated = true }) {
   const marker = accent ? `${prefix}-arrow-accent` : `${prefix}-arrow`;
+
+  if (accent && animated) {
+    return (
+      <g className="connector-group-accent">
+        {/* Soft background glow line */}
+        <path
+          d={d}
+          fill="none"
+          stroke="var(--accent-glow)"
+          strokeWidth={2}
+          strokeOpacity={0.5}
+        />
+        {/* Animated dashing flowing along the stroke */}
+        <path
+          d={d}
+          fill="none"
+          stroke="var(--accent-fill)"
+          strokeWidth={1.75}
+          strokeDasharray="6 6"
+          className="animated-flow-stroke"
+          markerEnd={`url(#${marker})`}
+        />
+        {/* Moving arrow along the accented path */}
+        <path
+          d="M-5 -3.5 L3 0 L-5 3.5 z"
+          fill="var(--accent-fill)"
+          className="connector-moving-arrow"
+        >
+          <animateMotion
+            dur="2.4s"
+            repeatCount="indefinite"
+            rotate="auto"
+            path={d}
+          />
+        </path>
+      </g>
+    );
+  }
+
   return (
     <path
       d={d}

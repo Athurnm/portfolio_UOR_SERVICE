@@ -5,6 +5,7 @@ import BeaconMount from './components/canvas/BeaconMount.jsx';
 import CompanyCarousel from './components/CompanyCarousel.jsx';
 import Reveal from './components/ui/Reveal.jsx';
 import Metric from './components/ui/Metric.jsx';
+import Disclosure from './components/ui/Disclosure.jsx';
 import CareerTimeline from './components/diagrams/CareerTimeline.jsx';
 import CapabilityStack from './components/diagrams/CapabilityStack.jsx';
 import ToolsArchitecture from './components/diagrams/ToolsArchitecture.jsx';
@@ -64,7 +65,15 @@ export default function App() {
             <div className="impact-grid">
               {impactMetrics.map((metric) => (
                 <div key={metric.label} className="impact-cell">
-                  <Metric value={metric.value} unit={metric.unit} label={metric.label} note={metric.context} />
+                  <Metric
+                    value={metric.value}
+                    unit={metric.unit}
+                    label={metric.label}
+                    note={metric.context}
+                    from={metric.from}
+                    to={metric.to}
+                    labelTop
+                  />
                 </div>
               ))}
             </div>
@@ -116,12 +125,18 @@ export default function App() {
             <CapabilityStack />
           </div>
 
-          <p className="identifier" style={{ marginTop: '1rem' }}>
-            {education.degree}, {education.institution} · {education.standing}
-          </p>
-          <p className="body-copy--tight" style={{ marginTop: '0.25rem' }}>
-            Thesis: {education.thesis}.
-          </p>
+          <div style={{ marginTop: '1.75rem', maxWidth: '40rem' }}>
+            <Disclosure summary="Education & Academic Credentials">
+              <div style={{ paddingTop: '0.625rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                <p className="identifier" style={{ margin: 0, fontWeight: 600 }}>
+                  {education.degree}, {education.institution} · {education.standing}
+                </p>
+                <p className="body-copy--tight" style={{ margin: 0 }}>
+                  Thesis: {education.thesis}.
+                </p>
+              </div>
+            </Disclosure>
+          </div>
 
           <h3 className="subsection-title" style={{ marginTop: '3rem' }}>
             Built independently

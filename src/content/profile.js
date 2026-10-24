@@ -24,15 +24,17 @@ export const profile = {
 export const impactMetrics = [
   {
     value: 'IDR 1.2B',
-    unit: 'per year',
+    unit: '/ year',
     label: 'Client cost savings',
     context: 'Per enterprise client, after automated reconciliation replaced manual ledger matching.',
     caseId: 'matchmade',
   },
   {
-    value: '5 days to 1 day',
+    from: '5',
+    to: '1 Day',
+    value: '5 → 1 Day',
     label: 'Reconciliation cycle',
-    context: 'Manual matching down to a single automated run, per monthly close.',
+    context: 'Manual matching down to a single automated run, / monthly close.',
     caseId: 'matchmade',
   },
   {
@@ -43,7 +45,7 @@ export const impactMetrics = [
   },
   {
     value: '11 to 34 GB',
-    unit: 'per month',
+    unit: '/ month',
     label: 'Transaction volume',
     context: 'Data the pipeline handled after the streaming rework. Three times the original load.',
     caseId: 'matchmade',
@@ -57,20 +59,23 @@ export const companies = [
     domain: 'Enterprise B2B SaaS, financial reconciliation',
     period: '2024 to present',
     role: 'Product Manager',
+    productUrl: 'https://matchmade.io/',
+    status: 'Active',
+    logo: '/matchmade_transparent.png',
     problem:
-      'Accounting teams spent five days per close matching hundreds of thousands of ledger rows, bank statements and invoices by hand.',
+      'Accounting teams spent five days / close matching hundreds of thousands of ledger rows, bank statements and invoices by hand.',
     diagram: 'reconciliation',
     metrics: [
-      { value: 'IDR 1.2B', unit: 'per year', label: 'Saved per client' },
-      { value: '5 days to 1 day', label: 'Close cycle' },
-      { value: '11 to 34 GB', unit: 'per month', label: 'Pipeline volume' },
+      { value: 'IDR 1.2B', unit: '/ year', label: 'Saved / client' },
+      { from: '5', to: '1 Day', value: '5 → 1 Day', label: 'Close cycle' },
+      { value: '11 to 34 GB', unit: '/ month', label: 'Pipeline volume' },
     ],
     tags: ['Reconciliation engine', 'Document extraction', 'Enterprise RBAC', 'API integrations'],
     disclosure: {
       architecture:
         'Hybrid stream processing: virtualised tables on the client, chunked database streaming for multi-million row comparisons, and deterministic audit logs for every match decision.',
       decisions: [
-        'Chose a multi-table matching engine over per-format importers, so one rule set covers ledgers, statements and invoices.',
+        'Chose a multi-table matching engine over format-specific importers, so one rule set covers ledgers, statements and invoices.',
         'Used Docling for PDF to structured table extraction rather than a generic OCR pass, because tabular structure and multi-page financial metadata had to survive.',
         'Enforced tenant-isolated row level security so no cross-organisation ledger data is reachable.',
       ],
@@ -82,6 +87,9 @@ export const companies = [
     domain: 'Consumer travel marketplace (OTA)',
     period: '2022 to 2023',
     role: 'Product Manager',
+    productUrl: null,
+    status: 'Not Operational',
+    logo: '/pegipegi_transparent.png',
     problem:
       'Payment methods had not changed in two years, unsettled transactions were flooding support, and messaging costs kept climbing.',
     diagram: 'payment',
@@ -107,6 +115,9 @@ export const companies = [
     domain: 'Blue-collar job platform and SME marketplace',
     period: '2021 to 2022',
     role: 'Product Manager',
+    productUrl: null,
+    status: 'Not Operational',
+    logo: '/adakerja_transparent.png',
     problem:
       'Mobile payment conversion was low, and three engineering squads were building against three different ideas of the roadmap.',
     diagram: 'funnel',

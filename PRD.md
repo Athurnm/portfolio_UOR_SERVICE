@@ -365,6 +365,8 @@ The following decisions are formally recorded in `journal/state/decisions.json` 
 | **`DEC-0249-NON-MM`** | 2026-10-24 | Anti-slop audit #002 is the acceptance gate for this build | 34 findings, all approved and closed. The follow-up report records the evidence per finding. | `decided` |
 | **`DEC-0250-NON-MM`** | 2026-10-24 | `?theme=light` and `?theme=dark` override the stored theme for one page load | Makes a shared link open in the intended theme and makes visual review reproducible, without writing to `localStorage`. | `decided` |
 | **`DEC-0251-NON-MM`** | 2026-10-24 | Mobile smartphone viewport responsiveness optimization (320px–414px) | Solves unreadable SVG text collapsing by implementing dual-diagram paths (vertical step rail in CareerTimeline, card stack in CapabilityStack), overflow panning container with touch cue (.diagram-scroll-wrapper with min-width 520px in DiagramFrame), swipe scroll tracking + quick tabs in CompanyCarousel, compact 2x2 impact grid, and vertical hero actions. | `decided` |
+| **`DEC-0252-NON-MM`** | 2026-10-24 | Visual & editorial refinements from human manual review | (1) Metric-label on top of metric-value in highlight section, (2) slash '/' notation for unit rates, (3) '5 -> 1 Day' with proportionally aligned ArrowRight icon, (4) collapsible accordion for education & thesis, (5) glassmorphic company logo badges and subtle corner watermarks, (6) live link for Matchmade and 'Not Operational' badges for AdaKerja and PegiPegi, (7) SVG moving arrow and flow dash animation on accented paths, and (8) '@athurnm' handle in sticky navigation title. | `decided` |
+
 
 
 ---

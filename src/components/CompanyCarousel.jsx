@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { companies } from '../content/profile.js';
 import Metric from './ui/Metric.jsx';
 import Disclosure from './ui/Disclosure.jsx';
@@ -52,14 +52,57 @@ function Panel({ company, index }) {
       aria-label={`${company.name}, ${index + 1} of ${COUNT}`}
       className="carousel-panel"
     >
-      <div className="carousel-panel-inner">
-        <div className="grid items-center gap-8 lg:grid-cols-12">
+      <div className="carousel-panel-inner" style={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Subtle decorative watermark logo in card background */}
+        {company.logo ? (
+          <img
+            src={company.logo}
+            alt=""
+            aria-hidden="true"
+            className="company-watermark"
+          />
+        ) : null}
+
+        <div className="grid items-center gap-8 lg:grid-cols-12" style={{ position: 'relative', zIndex: 1 }}>
           <div className="lg:col-span-5">
-            <p className="label">{company.domain}</p>
-            <h3 className="section-title" style={{ marginTop: '0.5rem' }}>
-              {company.name}
-            </h3>
-            <p className="identifier" style={{ marginTop: '0.375rem' }}>
+            <div className="flex items-center justify-between gap-3" style={{ marginBottom: '0.625rem' }}>
+              <p className="label" style={{ margin: 0 }}>{company.domain}</p>
+              {company.logo ? (
+                <div className="company-logo-badge" title={`${company.name} logo`}>
+                  <img
+                    src={company.logo}
+                    alt={`${company.name} logo`}
+                    className="company-logo-img"
+                  />
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5" style={{ marginTop: '0.25rem' }}>
+              <h3 className="section-title" style={{ margin: 0 }}>
+                {company.name}
+              </h3>
+              {company.productUrl ? (
+                <a
+                  href={company.productUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="company-status-pill company-status-pill--active"
+                  title="Visit Matchmade official site"
+                >
+                  <span className="status-dot status-dot--active" />
+                  <span>matchmade.io</span>
+                  <ExternalLink size={11} aria-hidden="true" style={{ strokeWidth: 2 }} />
+                </a>
+              ) : (
+                <span className="company-status-pill company-status-pill--inactive" title="Company is no longer operational">
+                  <span className="status-dot status-dot--inactive" />
+                  <span>Not Operational</span>
+                </span>
+              )}
+            </div>
+
+            <p className="identifier" style={{ marginTop: '0.5rem' }}>
               {company.role}, {company.period}
             </p>
             <p className="body-copy" style={{ marginTop: '1rem' }}>
@@ -86,14 +129,23 @@ function Panel({ company, index }) {
             marginTop: '1.75rem',
             paddingTop: '1.5rem',
             borderTop: '1px solid var(--hairline)',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
           {company.metrics.map((metric) => (
-            <Metric key={metric.label} value={metric.value} unit={metric.unit} label={metric.label} />
+            <Metric
+              key={metric.label}
+              value={metric.value}
+              unit={metric.unit}
+              label={metric.label}
+              from={metric.from}
+              to={metric.to}
+            />
           ))}
         </div>
 
-        <div style={{ marginTop: '1.5rem' }}>
+        <div style={{ marginTop: '1.5rem', position: 'relative', zIndex: 1 }}>
           <Disclosure summary="Architecture and trade-offs">
             <div className="stack-4" style={{ paddingTop: '0.5rem' }}>
               <p className="body-copy--tight">{company.disclosure.architecture}</p>

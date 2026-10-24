@@ -100,6 +100,9 @@ export default function Navbar({ activePage = 'portfolio' }) {
             <span className="nav-brand-name">
               {profile.name}
             </span>
+            <span className="nav-brand-handle">
+              @athurnm
+            </span>
           </a>
 
           <div className="hidden items-center md:flex">
