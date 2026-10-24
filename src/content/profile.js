@@ -26,7 +26,7 @@ export const impactMetrics = [
     value: 'IDR 1.2B',
     unit: '/ year',
     label: 'Client cost savings',
-    context: 'Per enterprise client, after automated reconciliation replaced manual ledger matching.',
+    context: 'Per enterprise client, after automated reconciliation implemented.',
     caseId: 'matchmade',
   },
   {
@@ -40,14 +40,14 @@ export const impactMetrics = [
   {
     value: '+60%',
     label: 'Payment click-through',
-    context: 'Mobile checkout funnel after the submission and payment redesign.',
+    context: 'Mobile checkout funnel after the app redesign.',
     caseId: 'adakerja',
   },
   {
-    value: '11 to 34 GB',
+    value: '11 → 34 GB',
     unit: '/ month',
     label: 'Transaction volume',
-    context: 'Data the pipeline handled after the streaming rework. Three times the original load.',
+    context: 'Data the pipeline handled after the streaming rework. 3x the original load.',
     caseId: 'matchmade',
   },
 ];

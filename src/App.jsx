@@ -31,7 +31,14 @@ export default function App() {
               <p className="label">
                 {profile.name} · {profile.role}
               </p>
-              <SplitText as="h1" id="hero-title" className="display" style={{ marginTop: '0.75rem' }} delay={0.1}>
+              <SplitText
+                as="h1"
+                id="hero-title"
+                className="display"
+                style={{ marginTop: '0.75rem' }}
+                delay={0.1}
+                trigger="mount"
+              >
                 {profile.claim}
               </SplitText>
               <p className="body-copy" style={{ marginTop: '1.25rem', maxWidth: '34rem' }}>

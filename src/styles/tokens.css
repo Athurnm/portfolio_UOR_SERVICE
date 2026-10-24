@@ -20,7 +20,9 @@
   --accent-ink: #92400E;
   --accent-fill: #D97706;
   --accent-fill-hover: #B86504;
-  --accent-fill-ink: #141413;
+  /* Owner-approved deviation: white on --accent-fill is 3.2:1, below AA for
+     normal text. Requested for the light theme only. See DESIGN.md 3.2. */
+  --accent-fill-ink: #FFFFFF;
   --accent-wash: rgba(217, 119, 6, 0.08);
   --accent-rule: rgba(217, 119, 6, 0.45);
 

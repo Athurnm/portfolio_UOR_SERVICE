@@ -509,15 +509,17 @@ button {
 .impact-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem 1rem;
-  padding-block: 2rem;
+  /* Column gap stays at 1rem: at 320px the 2x2 grid has 132px per cell and
+     `11 -> 34 GB` needs all of it. The breathing room goes vertical. */
+  gap: 2.25rem 1rem;
+  padding-block: 2.75rem;
 }
 
 @media (min-width: 640px) {
   .impact-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding-block: 2.5rem;
+    gap: 2.75rem 2rem;
+    padding-block: 3.25rem;
   }
 }
 
@@ -525,10 +527,11 @@ button {
   .impact-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 0;
+    padding-block: 3.5rem;
   }
 
   .impact-cell {
-    padding-inline: 1.75rem;
+    padding-inline: 2.25rem;
     border-left: 1px solid var(--hairline);
   }
 

@@ -62,7 +62,7 @@ Amber is **demoted from a theme to a signal**. It no longer tints the page. It m
   /* Signal */
   --accent-ink: #92400E;           /* amber for TEXT and links: 6.7:1 canvas, 6.0:1 surface */
   --accent-fill: #D97706;          /* amber for FILLS: 3.0:1 on canvas, borders and large type only */
-  --accent-fill-ink: #141413;      /* text that sits ON --accent-fill: 5.8:1 */
+  --accent-fill-ink: #FFFFFF;      /* text that sits ON --accent-fill: 3.2:1, owner-approved AA deviation (DEC-0254) */
   --accent-wash: rgba(217, 119, 6, 0.08); /* metric backgrounds, selection */
 
   /* Structure */
@@ -118,8 +118,7 @@ Amber is **demoted from a theme to a signal**. It no longer tints the page. It m
 | `--accent-ink` on canvas (light) | 6.7:1 | PASS | PASS |
 | `--accent-ink` on `--bg-surface` (light) | 6.0:1 | PASS | PASS |
 | `--accent-fill` on canvas (light) | 3.0:1 | FAIL: never use as text | PASS |
-| `--accent-fill-ink` on `--accent-fill` (light) | 5.8:1 | PASS | PASS |
-| White `#FFFFFF` on `--accent-fill` (light) | 3.2:1 | FAIL: never use | PASS |
+| `--accent-fill-ink` on `--accent-fill` (light) | 3.2:1 | FAIL: owner-approved deviation (DEC-0254) | PASS |
 | `--text-primary` on canvas (dark) | 18.9:1 | PASS | PASS |
 | `--text-secondary` on canvas (dark) | 11.4:1 | PASS | PASS |
 | `--text-muted` on canvas (dark) | 7.8:1 | PASS | PASS |
@@ -129,7 +128,7 @@ Amber is **demoted from a theme to a signal**. It no longer tints the page. It m
 Two consequences that change the current build:
 
 1. `--text-muted` moves from `#8C857B` (3.4:1, fails) to `#6B655C`. The old value was used for most 10px metadata, which was the site's largest accessibility defect.
-2. **The primary CTA stops using white text.** `text-white` on `#D97706` is 3.2:1. Filled amber buttons use `--accent-fill-ink` (near-black). This is also why the button looks heavier than it needs to: white on orange vibrates.
+2. **The light-theme primary CTA uses white text, by owner decision.** `--accent-fill-ink` is `#FFFFFF` in the light theme, which is 3.2:1 on `#D97706`: below the 4.5:1 AA floor for normal text, above the 3.0:1 floor for large text and UI. The owner requested it explicitly and accepted the deviation (DEC-0254-NON-MM). The dark theme keeps `#141413` at 8.6:1. This is a recorded deviation, not an oversight, and it is the only pair in this matrix that ships below AA.
 
 ### 3.3 The amber budget
 
@@ -223,7 +222,8 @@ Each company panel carries, in place of paragraphs:
 
 | Motion | Where | Duration and easing | Purpose |
 | :--- | :--- | :--- | :--- |
-| Split-Text & Staggered Reveal | All section headings (`h1`, `h2`, `h3`) | Stagger `0.02s` per character, `620ms` `translateY(125%)` to `0`, `cubic-bezier(0.16, 1, 0.3, 1)` | Text emerges from invisible overflow boundaries (`overflow: hidden`) on viewport entry |
+| Split-Text & Staggered Reveal | Hero `h1` on first render; every `h2` and `h3` when scrolled into view, once | Stagger `0.02s` per character, `620ms` `translateY(125%)` to `0`, `cubic-bezier(0.16, 1, 0.3, 1)` | Text emerges from invisible overflow boundaries (`overflow: hidden`). `IntersectionObserver` triggers the section headings; the hero runs on mount |
+| Metric count-up | Impact band and every `Metric` row in the carousel | `1000ms`, ease-out cubic `1 - (1 - t)^3`, `requestAnimationFrame` | Each numeric token counts from 0 to its target once, when the reading enters the viewport. `tabular-nums` holds the layout still |
 | Pinned carousel tracking scroll | Section 3 | Tied to scroll position, no easing | Position feedback: which company you are reading |
 | Reveal (opacity 0 to 1, `translateY 12px` to 0) | Once per viewport, on the section's first entry | 420ms, `cubic-bezier(0.16, 1, 0.3, 1)` | Separates chapter starts, nothing more |
 | Hover (border to `--hairline-strong`, text to `--text-primary`) | Interactive elements | 140ms linear | Affordance |
@@ -234,11 +234,13 @@ Each company panel carries, in place of paragraphs:
 Text rarely appears statically. Headings split into individual characters or word spans (`gsap.from(chars, { yPercent: 120, stagger: 0.02 })`), emerging from invisible overflow boundaries (`overflow: hidden`).
 - **DOM Architecture**: The heading root holds `aria-label` with the full untruncated text, while inner spans carry `aria-hidden="true"`. Each word is wrapped in an inline-block `.split-word-mask` with `overflow: hidden; white-space: nowrap; vertical-align: bottom;` and descender margin/padding compensation (`padding-bottom: 0.15em; margin-bottom: -0.15em;`).
 - **Character Reveal**: Inner `.split-char` spans start at `transform: translateY(125%); opacity: 0;` and transition to `transform: translateY(0); opacity: 1;` with a continuous stagger of `0.02s` per character across words, timed with ease `cubic-bezier(0.16, 1, 0.3, 1)` over 620ms.
+- **Trigger**: `trigger="mount"` runs the hero `h1` on first render. `trigger="view"` (the default) holds every `h2` and `h3` until `useInView` reports the heading on screen, then reveals it once and disconnects the observer. A 1200ms fallback, the same pattern `Reveal` uses, reveals a heading that is already visible if the observer never fires, so nothing can be stranded invisible.
 - **Accessibility & Reduced Motion**: Under `prefers-reduced-motion: reduce`, all character transforms and transitions are bypassed immediately (`transform: none !important; opacity: 1 !important;`), ensuring instant, readable rendering. Screen readers read the intact heading via `aria-label`.
+- **Metric count-up**: `CountUp` tokenizes the value string, keeps prefixes, suffixes, separators and decimals (`IDR 1.2B`, `5 -> 1 Day`, `+60%`, `11 to 34 GB`, `3x`), and animates every numeric token. The animating spans are `aria-hidden` and the final string sits in an `sr-only` node, so a screen reader only ever hears the target value. Under `prefers-reduced-motion: reduce` the final value renders immediately with no `requestAnimationFrame` loop.
 
 **Removed:** `animate-ping`, `animate-pulse`, `animate-bounce`, `whileHover` scale and lift on every card, `hover:rotate-45` on the theme toggle, staggered fade-up on every single block.
 
-**`prefers-reduced-motion: reduce`:** the carousel becomes a stacked list of three panels, the reveal and split-text transforms are skipped, and no transform runs. This is a rendering path, not a CSS override.
+**`prefers-reduced-motion: reduce`:** the carousel becomes a stacked list of three panels, the reveal and split-text transforms are skipped, the metric count-up renders its final value with no animation, and no transform runs. This is a rendering path, not a CSS override.
 
 ---
 

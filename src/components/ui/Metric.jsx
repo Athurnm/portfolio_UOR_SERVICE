@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import CountUp from './CountUp.jsx';
 
 /* A reading, not a card. Mono is reserved for the value, per DESIGN.md 4.2. */
 export default function Metric({ value, unit, label, note, from, to, size = 'md', labelTop = false }) {
@@ -40,9 +41,7 @@ export default function Metric({ value, unit, label, note, from, to, size = 'md'
       <div className="flex flex-wrap items-baseline gap-x-2">
         {effectiveFrom && effectiveTo ? (
           <div className="inline-flex items-center gap-2 flex-wrap">
-            <span className="metric-value" style={valueStyle}>
-              {effectiveFrom}
-            </span>
+            <CountUp className="metric-value" style={valueStyle} value={effectiveFrom} />
             <span
               className="inline-flex items-center justify-center"
               style={{
@@ -58,14 +57,10 @@ export default function Metric({ value, unit, label, note, from, to, size = 'md'
                 style={{ strokeWidth: 2.5 }}
               />
             </span>
-            <span className="metric-value" style={valueStyle}>
-              {effectiveTo}
-            </span>
+            <CountUp className="metric-value" style={valueStyle} value={effectiveTo} />
           </div>
         ) : (
-          <span className="metric-value" style={valueStyle}>
-            {value}
-          </span>
+          <CountUp className="metric-value" style={valueStyle} value={value} />
         )}
         {unit ? (
           <span className="identifier" style={{ fontSize: '0.8125rem' }}>

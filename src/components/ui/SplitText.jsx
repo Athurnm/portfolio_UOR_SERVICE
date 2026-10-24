@@ -1,10 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import useInView from '../../hooks/useInView.js';
 
 /**
  * SplitText & Staggered Reveal
  * Splits headings into word masks (overflow: hidden) and individual character spans
  * emerging from invisible overflow boundaries (yPercent: 120 -> 0) with a 0.02s stagger.
- * 
+ *
+ * Trigger: `trigger="mount"` animates on first render (the hero h1).
+ * `trigger="view"` (default) waits until the heading is scrolled into view, once.
+ *
  * Fully accessible with aria-label on root and aria-hidden on split spans.
  * Respects prefers-reduced-motion with instant fallback.
  */
@@ -16,59 +20,32 @@ export default function SplitText({
   stagger = 0.02,
   delay = 0,
   by = 'chars', // 'chars' | 'words'
+  trigger = 'view', // 'view' | 'mount'
   id,
   ...rest
 }) {
-  const containerRef = useRef(null);
+  const [ref, inView] = useInView();
   const [revealed, setRevealed] = useState(false);
 
   // Extract clean text content from children
   const text = typeof children === 'string' ? children : String(children || '');
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return undefined;
-
-    const show = () => setRevealed(true);
-
-    if (typeof IntersectionObserver === 'undefined') {
-      show();
-      return undefined;
-    }
-
-    // If already in top of viewport on mount
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.95 && rect.bottom > 0) {
-      const t = window.setTimeout(show, Math.max(delay * 1000, 40));
+    if (trigger === 'mount') {
+      const t = window.setTimeout(() => setRevealed(true), Math.max(delay * 1000, 40));
       return () => window.clearTimeout(t);
     }
 
-    const fallback = window.setTimeout(show, 1500);
+    if (!inView) return undefined;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            window.clearTimeout(fallback);
-            if (delay > 0) {
-              window.setTimeout(show, delay * 1000);
-            } else {
-              show();
-            }
-            observer.disconnect();
-          }
-        });
-      },
-      { rootMargin: '-4% 0px' }
-    );
+    if (delay > 0) {
+      const t = window.setTimeout(() => setRevealed(true), delay * 1000);
+      return () => window.clearTimeout(t);
+    }
 
-    observer.observe(el);
-
-    return () => {
-      window.clearTimeout(fallback);
-      observer.disconnect();
-    };
-  }, [delay]);
+    setRevealed(true);
+    return undefined;
+  }, [trigger, inView, delay]);
 
   // Split into words, tracking global character index for continuous stagger across words
   const words = text.split(' ');
@@ -76,7 +53,7 @@ export default function SplitText({
 
   return (
     <Tag
-      ref={containerRef}
+      ref={ref}
       id={id}
       className={`split-text-root ${className}`.trim()}
       style={style}
