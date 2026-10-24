@@ -1,53 +1,77 @@
+/* Amber Beacon, demoted.
+   Direction and the full contrast matrix live in DESIGN.md Section 3.
+   What this file enforces: amber is a signal, not a theme. Glass is a
+   nav-only material. Two elevations. Three radii. Mono is a numeric face. */
+
 :root {
-  /* Light Mode (Airy Alabaster, Warm Parchment) */
-  --bg-canvas: #FAF8F5;          /* Warm Alabaster Paper */
-  --bg-surface: #F3EFEA;         /* Inset Card Background */
-  --bg-surface-elevated: #FFFFFF;
-  --bg-glass: rgba(255, 255, 255, 0.78);
-  
-  --text-primary: #141413;       /* Deep Obsidian Ink */
-  --text-secondary: #57534E;     /* Warm Graphite */
-  --text-muted: #8C857B;         /* Muted Stone */
+  color-scheme: light;
 
-  /* Amber Beacon Core Accents */
-  /* RULE: --amber-core is for halo, borders, 3D emissives; --amber-text is for body/link text (WCAG AA 4.7:1) */
-  --amber-core: #D97706;         /* Primary Beacon Amber */
-  --amber-glow: #F59E0B;         /* Radiant Signal Gold */
-  --amber-text: #B45309;         /* High-contrast readable amber text on light */
-  --amber-subtle: rgba(217, 119, 6, 0.10);
-  --amber-border: rgba(217, 119, 6, 0.28);
+  /* Paper */
+  --bg-canvas: #FAF8F5;
+  --bg-surface: #F1ECE4;
+  --bg-raised: #FFFFFF;
 
-  /* Structural & Borders */
-  --border-hairline: rgba(20, 20, 19, 0.08);
-  --border-strong: rgba(20, 20, 19, 0.16);
-  --shadow-elevated: 0 12px 32px -8px rgba(20, 20, 19, 0.06), 0 0 1px 1px rgba(20, 20, 19, 0.05);
-  --shadow-beacon: 0 0 24px -4px rgba(245, 158, 11, 0.25);
+  /* Ink. Every pair verified against the matrix in DESIGN.md 3.2. */
+  --text-primary: #141413;
+  --text-secondary: #57534E;
+  --text-muted: #6B655C;
 
-  /* Typography */
-  --font-display: 'Outfit', sans-serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Signal. Amber is rationed, see DESIGN.md 3.3. */
+  --accent-ink: #92400E;
+  --accent-fill: #D97706;
+  --accent-fill-hover: #B86504;
+  --accent-fill-ink: #141413;
+  --accent-wash: rgba(217, 119, 6, 0.08);
+  --accent-rule: rgba(217, 119, 6, 0.45);
+
+  /* Only for a confirmed clipboard copy, never for layout. */
+  --signal-ok: #047857;
+
+  /* Structure */
+  --hairline: rgba(20, 20, 19, 0.10);
+  --hairline-strong: rgba(20, 20, 19, 0.20);
+  --focus-ring: var(--accent-ink);
+
+  /* Type */
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Geometry. Three steps, each with a job. */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-pill: 999px;
+
+  /* Elevation. Two, both meaning "above the document". */
+  --shadow-nav: 0 1px 2px rgba(20, 20, 19, 0.06), 0 8px 24px -12px rgba(20, 20, 19, 0.14);
+  --shadow-popover: 0 4px 8px rgba(20, 20, 19, 0.06), 0 16px 40px -16px rgba(20, 20, 19, 0.22);
+
+  --nav-height: 3.5rem;
 }
 
 [data-theme="dark"] {
-  /* Dark Console Mode (Carbon Obsidian & Amber Glow) */
-  --bg-canvas: #0C0A09;          /* Carbon Obsidian */
-  --bg-surface: #171412;         /* Warm Espresso Slate */
-  --bg-surface-elevated: #1F1B18;
-  --bg-glass: rgba(23, 20, 18, 0.82);
-  
+  color-scheme: dark;
+
+  --bg-canvas: #0C0A09;
+  --bg-surface: #171412;
+  --bg-raised: #221D19;
+
   --text-primary: #F5F5F4;
-  --text-secondary: #A8A29E;
-  --text-muted: #78716C;
+  --text-secondary: #C9C4BF;
+  --text-muted: #A8A29E;
 
-  --amber-core: #F59E0B;
-  --amber-glow: #FBBF24;
-  --amber-text: #FBBF24;         /* High-contrast readable amber on dark (>10:1) */
-  --amber-subtle: rgba(245, 158, 11, 0.15);
-  --amber-border: rgba(245, 158, 11, 0.38);
+  --accent-ink: #FBBF24;
+  --accent-fill: #F59E0B;
+  --accent-fill-hover: #FBBF24;
+  --accent-fill-ink: #141413;
+  --accent-wash: rgba(245, 158, 11, 0.10);
+  --accent-rule: rgba(245, 158, 11, 0.55);
 
-  --border-hairline: rgba(245, 245, 244, 0.08);
-  --border-strong: rgba(245, 245, 244, 0.18);
-  --shadow-elevated: 0 12px 32px -8px rgba(0, 0, 0, 0.4), 0 0 1px 1px rgba(255, 255, 255, 0.05);
-  --shadow-beacon: 0 0 30px -4px rgba(245, 158, 11, 0.35);
+  --signal-ok: #34D399;
+
+  --hairline: rgba(245, 245, 244, 0.12);
+  --hairline-strong: rgba(245, 245, 244, 0.24);
+
+  --shadow-nav: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+  --shadow-popover: 0 4px 8px rgba(0, 0, 0, 0.5), 0 16px 40px -16px rgba(0, 0, 0, 0.8);
 }

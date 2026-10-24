@@ -39,7 +39,7 @@ This directory is the git root and the portfolio app root. It already contains p
 
 ```text
 [1] Portfolio WebApp - Parent/          # repo root = portfolio app root
-├── PRD.md, PRD-draft.md, design.md, implementation-plan.md   # planning docs (kept)
+├── DESIGN.md (brand + tokens), design-system.md (3D + components), PRD.md, implementation-plan.md   # planning docs (kept)
 ├── Hyperplan_Review_2026-10-23.md, PRD_Review_*.md           # review artifacts (kept)
 ├── package.json                        # name: ai-pm-portfolio ; "workspaces": ["tools"]
 ├── index.html                          # static meta, OG tags, theme bootstrap, noscript
@@ -103,7 +103,7 @@ Estimates are solo-developer working days (Phase 1 target: 10).
 | ID | Task | Exit Criteria |
 | :--- | :--- | :--- |
 | F1 | Scaffold portfolio app in place; Tailwind v4 plugin; npm workspace `tools` | `npm run dev` works |
-| F2 | `tokens.css` from `design.md` incl. `--amber-text`; self-hosted fonts; theme bootstrap inline script | No light flash in dark mode; contrast checks pass |
+| F2 | `tokens.css` from `DESIGN.md` Section 3 (`--accent-ink`, `--accent-fill`, AA-passing `--text-muted`); self-hosted fonts; theme bootstrap inline script | No light flash in dark mode; contrast checks pass |
 | F3 | Vite chunking: `react-vendor`, `three-vendor` (dynamic only), `markdown-vendor` | Size report shows initial JS <= 120KB gz |
 | F4 | `validate-content.mjs` wired into `build` | TC-02 passes |
 

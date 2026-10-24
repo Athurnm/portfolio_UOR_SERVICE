@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@shared-tokens': path.resolve(__dirname, '../src/styles/tokens.css'),
+      '@shared-styles': path.resolve(__dirname, '../src/styles'),
     },
   },
   server: {

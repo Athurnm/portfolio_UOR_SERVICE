@@ -1,56 +1,32 @@
 import React from 'react';
 
-export default function BeaconPoster({ className = '' }) {
+/* Static fallback. Shown before WebGL is confirmed, on low-power devices, and
+   when prefers-reduced-motion is set. No animation, no network request. */
+export default function BeaconPoster() {
   return (
-    <div className={`relative flex items-center justify-center ${className}`} aria-hidden="true">
+    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg
-        viewBox="0 0 400 400"
-        className="w-full h-full max-w-sm sm:max-w-md opacity-85 select-none"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 320 320"
+        role="img"
+        aria-label="Abstract beacon: a wireframe lattice around a solid amber core."
+        style={{ width: '100%', height: '100%', maxHeight: '100%' }}
       >
-        <defs>
-          <radialGradient id="beaconGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--amber-glow)" stopOpacity="0.45" />
-            <stop offset="60%" stopColor="var(--amber-core)" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="var(--amber-core)" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="wireframeStroke" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--amber-glow)" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="var(--amber-core)" stopOpacity="0.3" />
-          </linearGradient>
-        </defs>
-
-        {/* Ambient Halo */}
-        <circle cx="200" cy="200" r="160" fill="url(#beaconGlow)" />
-
-        {/* Outer Orbit Rings */}
-        <circle cx="200" cy="200" r="130" stroke="var(--amber-border)" strokeWidth="1" strokeDasharray="4 6" opacity="0.6" />
-        <circle cx="200" cy="200" r="95" stroke="var(--amber-border)" strokeWidth="1.5" opacity="0.8" />
-
-        {/* Geometric Icosahedron Lattice (Abstract Wireframe Polygon) */}
-        <polygon
-          points="200,80 290,140 290,260 200,320 110,260 110,140"
-          stroke="url(#wireframeStroke)"
-          strokeWidth="1.5"
-          fill="none"
-        />
-        <line x1="200" y1="80" x2="200" y2="320" stroke="url(#wireframeStroke)" strokeWidth="1" opacity="0.5" />
-        <line x1="110" y1="140" x2="290" y2="260" stroke="url(#wireframeStroke)" strokeWidth="1" opacity="0.5" />
-        <line x1="110" y1="260" x2="290" y2="140" stroke="url(#wireframeStroke)" strokeWidth="1" opacity="0.5" />
-
-        {/* Glowing Central Beacon Core */}
-        <circle cx="200" cy="200" r="28" fill="var(--amber-core)" opacity="0.2" />
-        <circle cx="200" cy="200" r="16" fill="var(--amber-glow)" opacity="0.85" />
-        <circle cx="200" cy="200" r="6" fill="#FFFFFF" />
-
-        {/* Telemetry Orbital Nodes */}
-        <circle cx="290" cy="140" r="4" fill="var(--amber-glow)" />
-        <circle cx="110" cy="260" r="4" fill="var(--amber-glow)" />
-        <circle cx="200" cy="80" r="3.5" fill="var(--amber-core)" />
-        <circle cx="200" cy="320" r="3.5" fill="var(--amber-core)" />
-        <circle cx="160" cy="110" r="2.5" fill="var(--amber-glow)" opacity="0.7" />
-        <circle cx="240" cy="290" r="2.5" fill="var(--amber-glow)" opacity="0.7" />
+        <title>Beacon</title>
+        <g fill="none" stroke="var(--accent-fill)" strokeWidth="1">
+          <polygon points="160,44 258,102 258,218 160,276 62,218 62,102" opacity="0.35" />
+          <polygon points="160,80 226,118 226,202 160,240 94,202 94,118" opacity="0.25" />
+          <ellipse cx="160" cy="160" rx="128" ry="52" opacity="0.3" transform="rotate(-18 160 160)" />
+        </g>
+        <circle cx="160" cy="160" r="34" fill="var(--accent-fill)" />
+        <circle cx="160" cy="160" r="34" fill="none" stroke="var(--accent-ink)" strokeWidth="1" opacity="0.5" />
+        <g fill="var(--accent-ink)" opacity="0.7">
+          <circle cx="160" cy="44" r="2.5" />
+          <circle cx="258" cy="102" r="2.5" />
+          <circle cx="258" cy="218" r="2.5" />
+          <circle cx="160" cy="276" r="2.5" />
+          <circle cx="62" cy="218" r="2.5" />
+          <circle cx="62" cy="102" r="2.5" />
+        </g>
       </svg>
     </div>
   );

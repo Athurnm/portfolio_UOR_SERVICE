@@ -1,174 +1,163 @@
-# AI SaaS Product Manager Portfolio & Micro-Tools Hub
+# AI Product Manager Portfolio & Tools Lab
 
-[![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Vite 6](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
-[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B2B4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Netlify](https://img.shields.io/badge/Netlify-Deployed-00C7B7?logo=netlify&logoColor=white)](https://www.netlify.com/)
-[![Design: Amber Beacon](https://img.shields.io/badge/Design-style%3Aamber--beacon-D97706)](./design.md)
+[![Design: Amber Beacon](https://img.shields.io/badge/Design-amber%20beacon%2C%20demoted-92400E)](./DESIGN.md)
 [![License: Private](https://img.shields.io/badge/License-Private-red)](./)
 
-A high-performance personal web application and modular micro-tools hub built for an **AI SaaS Product Manager**. The platform serves a dual purpose:
+A personal portfolio and a small tools lab, built as two separate Vite apps that ship as one static artifact.
 
-1. **Curated Career & Case Studies Showcase (`/`)**: Demonstrates technical product leadership, verified unit economics, and AI product strategy synthesized directly from a centralized Markdown content engine (`src/content/profile.md`).
-2. **Modular Micro-Tools Hub (`/tools`)**: A decoupled, sandboxed sub-application (`tools/`) hosting PM utilities, AI economics simulators, and interactive workflow prototypes with isolated runtime containers.
-
----
-
-## 🌐 Live URLs & Domain Routing
-
-* **Primary Domain**: [`https://athur-exp-bot.tech/`](https://athur-exp-bot.tech/) *(redirects to active Netlify deployment)*
-* **Tools Hub**: `/tools/`
-* **GitHub Repository**: [`https://github.com/Athurnm/portfolio_UOR_SERVICE.git`](https://github.com/Athurnm/portfolio_UOR_SERVICE.git)
+1. **Portfolio (`/`)**: seven sections, each with its own composition. A hero, a four-reading impact band, a career timeline, a pinned company carousel with one case study per screen, a capability stack, the tools lab, and a contact close.
+2. **Tools lab (`/tools/`)**: a separate app with its own build, its own routes, and three blueprint containers. A tool that breaks cannot take the portfolio with it.
 
 ---
 
-## 🏛️ System Architecture
+## Live URLs
 
-The application adopts a **two-tier decoupled Single Page Application (SPA)** model compiled into a single static distribution artifact:
+- **Primary domain**: [`https://athur-exp-bot.tech/`](https://athur-exp-bot.tech/)
+- **Tools lab**: `/tools/`
+- **Repository**: `https://github.com/Authurnm/portfolio_UOR_SERVICE.git` (private)
+
+---
+
+## Documentation
+
+| File | What it is |
+| :--- | :--- |
+| [`DESIGN.md`](./DESIGN.md) | **The build contract.** Identity, dials, palette with a computed contrast matrix, type roles, dose caps, the seven section compositions, motion rules, diagram language, voice rules, and a decision manifest. Read this before changing anything visual. |
+| [`design-system.md`](./design-system.md) | The 3D beacon architecture, responsive viewport strategy, component specs, and accessibility rules. |
+| [`PRD.md`](./PRD.md) | Product requirements, user stories, NFRs, telemetry registry. |
+| [`implementation-plan.md`](./implementation-plan.md) | Phases, tasks, exit criteria, deploy workflow. |
+| `anti-slop/audit-002-2026-10-24.md` | The 34-finding audit of the first build. |
+| `anti-slop/audit-002-followup-2026-10-24.md` | What was fixed, with evidence, plus six defects found during the fix. |
+
+---
+
+## Architecture
 
 ```text
 portfolio_UOR_SERVICE/
 ├── public/
-│   ├── _redirects             # Netlify SPA routing fallback (/tools/* and /*)
-│   └── _headers               # Security headers, CSP, and asset caching rules
-├── src/                       # PORTFOLIO WEBAPP (Root /)
+│   ├── _redirects              # Netlify SPA rules for / and /tools/*
+│   ├── _headers                # CSP, security headers, asset caching
+│   ├── favicon.svg             # hexagon and dot, the beacon reduced to two shapes
+│   ├── og-image.png            # 1200x630 social card
+│   ├── robots.txt
+│   └── sitemap.xml
+├── src/                        # PORTFOLIO APP (built at /)
 │   ├── components/
-│   │   ├── canvas/            # Three.js Amber Beacon lattice & SVG fallback
-│   │   ├── layout/            # Floating glassmorphic Navbar & Footer
-│   │   └── ui/                # GlassCard and telemetry badges
-│   ├── content/
-│   │   └── profile.md         # Curated profile, case studies & verified KPIs
+│   │   ├── canvas/             # BeaconMount (lazy gate), BeaconScene, BeaconPoster
+│   │   ├── diagrams/           # 6 inline SVG diagrams + shared primitives
+│   │   ├── layout/             # Navbar, Footer
+│   │   ├── ui/                 # Reveal, Metric, Disclosure
+│   │   └── CompanyCarousel.jsx # pinned, scroll-driven, three render modes
+│   ├── content/profile.js      # SINGLE SOURCE for all portfolio content
+│   ├── hooks/                  # useFocusTrap, useScrollProgress
 │   ├── styles/
-│   │   ├── tokens.css         # Amber Beacon design tokens (WCAG 2.2 AA compliant)
-│   │   └── index.css          # Tailwind CSS v4 styling
-│   ├── App.jsx                # Portfolio main page (Hero, KPIs, Case Studies, Projects)
-│   └── main.jsx
-├── tools/                     # MICRO-TOOLS SUB-APPLICATION (/tools/)
+│   │   ├── tokens.css          # design tokens, both themes
+│   │   ├── components.css      # shared structure, wrapped in @layer components
+│   │   └── index.css           # entry: tailwind + tokens + components
+│   ├── App.jsx
+│   └── main.jsx                # self-hosted fonts, then styles
+├── tools/                      # TOOLS APP (built at /tools/)
 │   ├── src/
-│   │   ├── pages/
-│   │   │   ├── LabStandby.jsx     # Lab Standby overview & blueprint cards
-│   │   │   └── ToolContainer.jsx  # Standardized sandbox placeholder container
-│   │   ├── registry.js            # Blueprint tools metadata registry
-│   │   ├── App.jsx                # Sub-app router for /tools and /tools/:slug
-│   │   └── styles/index.css       # Imports shared design tokens
+│   │   ├── pages/              # LabStandby, ToolContainer
+│   │   ├── registry.js         # blueprint tool metadata
+│   │   ├── App.jsx
+│   │   └── styles/index.css    # imports the same tokens and components
 │   ├── index.html
-│   ├── package.json               # Independent tools workspace package
-│   └── vite.config.js             # Built with base path '/tools/'
-├── scripts/
-│   └── assemble-artifact.mjs  # Merges tools/dist into dist/tools for Netlify
-├── .github/workflows/
-│   └── deploy.yml             # Automated CI/CD deployment to Netlify
-├── .env.example               # Environment variables template
-└── vite.config.js             # Root Vite configuration with vendor chunk splitting
+│   └── vite.config.js          # base /tools/, @shared-styles alias
+├── scripts/assemble-artifact.mjs
+└── vite.config.js
 ```
 
----
+### One source of truth, three of them
 
-## 🎨 Visual Identity: `style:amber-beacon`
-
-Inspired by precision AI telemetry and warm editorial design:
-* **Adaptive Light/Dark Modes**: Warm Alabaster paper canvas (`#FAF8F5`) in Light mode; Carbon Obsidian (`#0C0A09`) in Dark Console mode.
-* **Strict WCAG 2.2 AA Accessibility**: Enforces token separation:
-  * `--amber-core` (`#D97706`): Reserved for decorative halo glows, borders, and 3D mesh emissives.
-  * `--amber-text` (`#B45309` on light, `#FBBF24` on dark): High-contrast readable text for links, badges, and headers (guaranteed `>= 4.5:1` contrast ratio).
-* **Scroll-Reactive 3D Beacon**: Procedural low-poly icosahedron lattice with orbiting nodes rotating and damping based on scroll depth. Automatically falls back to a static SVG poster on low-spec devices or when `prefers-reduced-motion` is enabled.
+- **Content**: `src/content/profile.js`. Structured data, not markdown, because the diagrams, the carousel, and the metric band all need typed values. The tools app imports the same file.
+- **Tokens**: `src/styles/tokens.css`, imported by both apps. The tools app reaches it through the `@shared-styles` alias, so the two builds cannot drift.
+- **Direction**: `DESIGN.md`. If a visual decision is not justified there, it does not ship.
 
 ---
 
-## ⚡ Quick Start & Local Development
+## Visual identity
 
-### Prerequisites
-* **Node.js**: `>= 20.0.0` (tested on Node v22.17.0)
-* **npm**: `>= 10.0.0`
+Amber is a **signal, not a theme**. It marks one thing per screen: the primary action, the status dot, or the one path a diagram is explaining. Everything else is paper, ink, and hairline.
 
-### 1. Installation
-Install dependencies for both the root portfolio app and the nested `tools` workspace:
+- **Light**: warm alabaster `#FAF8F5`, ink `#141413`, amber text `#92400E` (6.7:1), amber fill `#D97706` with near-black text (5.8:1).
+- **Dark**: carbon `#0C0A09`, amber text `#FBBF24` (11.8:1).
+- **Dose caps**: glass on one element (the nav), glow on one (the beacon core, dark mode only), shadow on two, radius in three steps, monospace for numbers and identifiers only.
+- **Contrast**: every pair is computed and tabulated in `DESIGN.md` Section 3.2. Nothing ships below 4.5:1.
+
+The full matrix, the seven section compositions, and the eighteen one-line decisions are in [`DESIGN.md`](./DESIGN.md).
+
+---
+
+## Quick start
+
+Requires Node 20 or newer.
+
 ```bash
 npm install
+npm run dev                      # portfolio at http://localhost:5173
+npm run dev --workspace=tools    # tools lab at http://localhost:5174/tools/
 ```
 
-### 2. Configure Environment Variables
-Copy the template and configure local values:
-```bash
-cp .env.example .env
-```
+### Theme override
 
-### 3. Start Local Development Servers
-* **Run Portfolio App (`http://localhost:5173`)**:
-  ```bash
-  npm run dev
-  ```
-* **Run Micro-Tools Sub-App standalone (`http://localhost:5174/tools/`)**:
-  ```bash
-  npm run dev --workspace=tools
-  ```
+Both apps accept `?theme=light` or `?theme=dark` on the URL. It overrides the stored preference for that page load without writing to `localStorage`, which makes a shared link open in the intended theme and makes visual review reproducible.
 
 ---
 
-## 📦 Building & Production Assembly
-
-To compile both applications into the final unified production distribution (`dist/`):
+## Build and preview
 
 ```bash
 npm run build:all
 ```
 
-This single command:
-1. Compiles the Portfolio SPA into `dist/`.
-2. Compiles the Tools sub-app into `tools/dist/` (with base path `/tools/`).
-3. Executes `scripts/assemble-artifact.mjs` to copy `tools/dist` into `dist/tools/`.
-4. Verifies presence of `dist/index.html`, `dist/tools/index.html`, `dist/_redirects`, and `dist/_headers`.
+That runs three steps: build the portfolio into `dist/`, build the tools app into `tools/dist/` with base `/tools/`, then `scripts/assemble-artifact.mjs` copies the tools build into `dist/tools/` and verifies both entry points plus `_redirects` and `_headers`.
 
-To preview the combined production build locally:
 ```bash
-npm run preview
+npm run preview    # http://localhost:4173
 ```
-Visit `http://localhost:4173/` for the portfolio and `http://localhost:4173/tools/` for the micro-tools lab.
+
+Note: `vite preview` does not apply `_redirects`, so `/tools/<slug>` needs Netlify or a server that honours the rule. The tools app resolves the slug from `window.location.pathname` on load.
 
 ---
 
-## 🚀 Netlify Deployment
+## Deploy
 
-The project is pre-configured for automated edge deployment on **Netlify**.
+Pushing to `main` triggers `.github/workflows/deploy.yml`. Add `NETLIFY_AUTH_TOKEN` and `NETLIFY_SITE_ID` as repository secrets.
 
-### Option A: Automated CI/CD (GitHub Actions)
-Pushing to the `main` branch triggers `.github/workflows/deploy.yml`. Add the following secrets in your GitHub repository (**Settings → Secrets and variables → Actions**):
-* `NETLIFY_AUTH_TOKEN`: Your Netlify Personal Access Token (7-day validity token).
-* `NETLIFY_SITE_ID`: Your Netlify API Site ID.
+Manual deploy:
 
-### Option B: Manual CLI Deploy
-Deploy directly from your terminal using the Netlify CLI:
 ```bash
-# 1. Build the unified distribution artifact
 npm run build:all
-
-# 2. Deploy to production
-npx netlify deploy --dir=dist --prod --auth=YOUR_NETLIFY_AUTH_TOKEN --site=YOUR_NETLIFY_SITE_ID
+npx netlify deploy --dir=dist --prod --auth=YOUR_TOKEN --site=YOUR_SITE_ID
 ```
 
 ---
 
-## 🔒 Security & Privacy Invariants
+## Security and privacy
 
-1. **Zero Secret Leakage**: No private API keys (OpenAI, Anthropic, Groq) are exposed in client-side Vite bundles (`VITE_*`).
-2. **Sanitized Content**: Profile and case study Markdown are sanitized via `rehype-sanitize` to guarantee zero XSS vulnerabilities.
-3. **Cookieless Telemetry**: Site analytics are measured via privacy-friendly **GoatCounter** custom events without tracking cookies or GDPR banner friction.
-4. **Content Security Policy (CSP)**: Strict headers enforced in `_headers` preventing unauthorized frame embeds and script injections.
+1. **No client secrets.** No API keys in the bundle, no `VITE_*` secret usage.
+2. **Strict CSP** in `public/_headers`. Fonts are self-hosted through `@fontsource` precisely so `font-src 'self'` holds.
+3. **Cookieless analytics.** GoatCounter custom events, no cookies, no consent banner.
+4. **No fabricated telemetry.** The tools containers state that they are not built yet. There are no invented latency, memory, or pass/fail strings anywhere in the codebase.
 
 ---
 
-## 🗺️ Micro-Tools Roadmap (Phase 2 Pipeline)
+## Tools roadmap
 
-| Tool Slug | Title | Domain | Status |
+| Slug | Title | Domain | Status |
 | :--- | :--- | :--- | :--- |
-| `llm-token-economics` | **LLM Token & Margin Simulator** | AI Economics | Blueprint Container Ready |
-| `prd-prompt-compiler` | **PRD Prompt Compiler & Gherkin Engine** | PM Automation | Blueprint Container Ready |
-| `asr-model-selector` | **Multilingual ASR Model Selector** | Speech AI | Blueprint Container Ready |
+| `llm-token-economics` | LLM Token & Margin Simulator | AI economics | Container ready, not built |
+| `prd-prompt-compiler` | PRD Prompt Compiler & Gherkin Engine | PM automation | Container ready, not built |
+| `asr-model-selector` | Multilingual ASR Model Selector | Speech AI | Container ready, not built |
 
 ---
 
-## 📄 License & Attribution
+## Author
 
-* **Author**: Athur Naufan Muharam ([athurnm@gmail.com](mailto:athurnm@gmail.com))
-* **Design System**: `style:amber-beacon`
-* **Repository**: Private (`Athurnm/portfolio_UOR_SERVICE`)
+Athur Naufan Muharam, [athurnm@gmail.com](mailto:athurnm@gmail.com)

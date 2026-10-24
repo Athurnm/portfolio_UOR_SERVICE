@@ -17,16 +17,10 @@
     "@fontsource/inter": "^5.1.0",
     "@fontsource/jetbrains-mono": "^5.1.0",
     "@fontsource/outfit": "^5.1.0",
-    "@react-three/drei": "^9.121.5",
     "@react-three/fiber": "^8.18.0",
-    "gray-matter": "^4.0.3",
     "lucide-react": "^0.475.0",
-    "motion": "^12.4.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-markdown": "^9.0.3",
-    "rehype-sanitize": "^6.0.0",
-    "remark-gfm": "^4.0.0",
     "three": "^0.173.0"
   },
   "devDependencies": {
