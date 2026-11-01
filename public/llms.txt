@@ -1,0 +1,79 @@
+# Athur Naufan Muharam - AI Product Manager & Technical PM
+
+> Portfolio and tools lab of Athur Naufan Muharam. Five years of product leadership across enterprise B2B SaaS, consumer travel marketplaces, and tech-driven recruitment platforms. Bridges product strategy, data modeling, and unit economics with hands-on full-stack development and autonomous AI agent workflows.
+
+- Name: Athur Naufan Muharam
+- Role: AI Product Manager / Technical Product Manager
+- Primary Website: https://athur-exp-bot.tech/
+- Tools Lab: https://athur-exp-bot.tech/tools/
+- Full Context: https://athur-exp-bot.tech/llms-full.txt
+- Location: Jakarta, Indonesia (WIB / UTC+7)
+- Availability: Open to relocation to the Netherlands, Australia, or Singapore (requires visa sponsorship). Also open to remote roles.
+- Email: athurnm@gmail.com
+- LinkedIn: https://linkedin.com/in/athurnm
+- GitHub: https://github.com/athurnm
+- Medium: https://medium.com/@athurnm
+
+## Verified Core Impact Metrics
+
+Every metric below is traceable to production releases and operational logs:
+
+- IDR 1.2 Billion / year: Annual operational cost savings per enterprise client achieved through automated multi-table financial reconciliation at Matchmade.
+- 5 -> 1 Day: Monthly financial close cycle reduction, turning multi-day manual matching into a single automated run at Matchmade.
+- +60% Payment CTR: Payment click-through rate increase resulting from mobile checkout redesign and progressive form caching at AdaKerja.
+- 11 -> 34 GB / month: Transaction volume handled after streaming architecture rework (3x original throughput) at Matchmade.
+- -85% Refund Turnaround: Customer service refund processing time reduced from 3 business days to under 4 hours via automated arbitration tooling at PegiPegi.
+- -50% Redundant Accounts: Account deduplication algorithm implementation, eliminating 50% messaging waste at PegiPegi.
+- -40% Checkout Duration: Checkout completion time reduced across web and mobile apps at PegiPegi.
+
+## Flagship Case Studies
+
+### 1. Matchmade Indonesia (2024 - Present)
+- Role: Product Manager (Enterprise B2B SaaS, Financial Reconciliation)
+- Problem: Enterprise accounting and operations teams spent 5 business days every month manually matching hundreds of thousands of ledger entries, bank statements, and invoices.
+- Product Strategy & Execution:
+  - Designed end-to-end automated reconciliation engine with customizable multi-table matching logic.
+  - Architected streaming data pipeline handling 34 GB/month with virtualized client-side rendering and deterministic audit trails.
+  - Developed AI proof-of-concept utilizing Docling for automated multi-page PDF-to-structured-table extraction.
+  - Enforced strict tenant-isolated Row Level Security (RLS) across corporate workspaces.
+- Key Outcomes: IDR 1.2B annual client savings; 80% cycle reduction (5 days down to 1 day); 3x pipeline throughput expansion.
+
+### 2. PegiPegi (2022 - 2023)
+- Role: Product Manager (Consumer Travel Marketplace / OTA)
+- Problem: Two years of payment channel stagnation, customer support overwhelmed with failed transaction escalations, and rising communication costs.
+- Product Strategy & Execution:
+  - Revamped mobile and web payment checkout funnels and integrated modern payment channels.
+  - Implemented asynchronous webhook retry pipeline with idempotent transaction tokens to handle bank gateway timeouts safely.
+  - Built automated account deduplication algorithms using phone numbers, payment fingerprints, and device IDs.
+  - Transitioned transactional notifications to WhatsApp Business API (75% open rate, 6% communication cost reduction).
+- Key Outcomes: 85% reduction in refund turnaround; 50% decrease in redundant accounts; 40% faster checkout duration; +10% new transacting users.
+
+### 3. AdaKerja (2021 - 2022)
+- Role: Product Manager (Blue-Collar Job Platform & SME Marketplace)
+- Problem: Low conversion in mobile payment funnels and fragmented squad-level backlogs during company restructuring.
+- Product Strategy & Execution:
+  - Unified product roadmap aligning three engineering squads behind a single North Star metric (verified candidate activations).
+  - Designed progressive single-page mobile checkout with client-side form state caching for unstable mobile networks.
+- Key Outcomes: +60% payment CTR uplift; unified 3 engineering squads under cohesive architecture.
+
+## Technical & AI Capabilities
+
+- AI & Agentic Systems: Prompt engineering, Retrieval-Augmented Generation (RAG), Local LLMs, n8n, OpenClaw, Antigravity IDE, Docling document extraction.
+- Full-Stack Engineering: JavaScript (ESNext), TypeScript, React, Next.js, Vite, Tailwind CSS, Node.js, REST APIs.
+- Data & Cloud Infrastructure: PostgreSQL, Supabase, Row Level Security, SQL, Netlify, Vercel, Git.
+- Product Leadership: Product roadmapping, Gherkin acceptance criteria (INVEST), user research, A/B testing, enterprise stakeholder alignment.
+
+## Education
+
+- Institut Teknologi Bandung (ITB)
+  - Degree: Bachelor of Information Systems (S.Kom)
+  - Academic Standing: GPA 3.75 / 4.00
+  - Thesis: Machine Learning Implementation for Anomaly Detection in Fraudulent Financial Transactions
+
+## Tools Lab & Utilities
+
+A decoupled tools playground hosted at https://athur-exp-bot.tech/tools/ featuring containerized PM utilities:
+- LLM Token & Margin Simulator (/tools/llm-token-economics): Models token consumption, margin impacts, and pricing tiers across multi-agent workflows.
+- PRD Prompt Compiler & Gherkin Engine (/tools/prd-prompt-compiler): Transforms unstructured requirements into INVEST-compliant Gherkin user stories.
+- Multilingual ASR Model Selector (/tools/asr-model-selector): Benchmarks Whisper, Conformer, and regional foundation models for Southeast Asian code-switching speech.
+- CalSnap (https://calendar-snap.vercel.app/): AI-powered screenshot and unstructured text calendar parser.

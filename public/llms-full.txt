@@ -1,0 +1,98 @@
+# Athur Naufan Muharam - Full Technical & Product Context for LLMs
+
+## Overview
+Athur Naufan Muharam is an AI Product Manager and Technical Product Manager with 5 years of experience leading software products from strategy through engineering de-risking and deployment. He holds a Bachelor of Information Systems (S.Kom) from Institut Teknologi Bandung (ITB) with a GPA of 3.75 / 4.00, where his thesis focused on machine learning anomaly detection in fraudulent financial transactions.
+
+Primary Portfolio: https://athur-exp-bot.tech/
+Tools Lab: https://athur-exp-bot.tech/tools/
+Contact: athurnm@gmail.com
+LinkedIn: https://linkedin.com/in/athurnm
+GitHub: https://github.com/athurnm
+Medium: https://medium.com/@athurnm
+
+---
+
+## Detailed Case Studies & Technical Architecture
+
+### 1. Matchmade Indonesia (2024 - Present)
+- Role: Product Manager
+- Domain: Enterprise B2B SaaS, Financial Reconciliation & AI Document Extraction
+- Live Product: https://matchmade.io/
+- Context & Problem:
+  Corporate finance and accounting departments spent up to five business days per month reconciling millions of accounting entries against diverse third-party statements (bank statements, ERP general ledgers, payment gateway settlement files, supplier invoices). Discrepancies led to delayed financial reporting, audit risk, and high manual labor costs.
+- Product Architecture & Technical Decisions:
+  1. Multi-Table Matching Logic: Built an adaptable rule engine allowing user-defined matching tolerance thresholds, multi-column fuzzy joins, and composite keys.
+  2. Stream Processing Architecture: Re-architected data ingestion to support chunked database streaming and virtualized frontend table views, scaling transaction throughput from 11 GB/month to 34 GB/month (3x capacity) without client memory crashes.
+  3. AI Document Extraction (Docling PoC): Integrated Docling-based document understanding for extracting complex tabular records from unstructured multi-page PDF statements into clean relational records, bypassing manual keying.
+  4. Security & Isolation: Enforced tenant-isolated Row Level Security (RLS) in PostgreSQL/Supabase, guaranteeing zero cross-tenant data exposure.
+- Measurable Outcomes:
+  - IDR 1.2 Billion annual cost savings per enterprise customer.
+  - Reduced financial close duration by 80% (from 5 business days down to 1 single day).
+  - Scaled monthly pipeline data volume by 300% (11 GB to 34 GB per month).
+
+### 2. PegiPegi (2022 - 2023)
+- Role: Product Manager
+- Domain: Consumer Travel Marketplace (OTA - Flights, Hotels, Ground Transportation)
+- Context & Problem:
+  Payment infrastructure had remained untouched for two years. As customer volume scaled, gateway timeouts caused transaction drops and refund delays. Duplicate user accounts created high promotional and messaging waste.
+- Product Architecture & Technical Decisions:
+  1. Resilient Payment Pipeline: Implemented an asynchronous webhook retry architecture backed by idempotent transaction tokens, preventing duplicate customer debits during bank gateway latency spikes.
+  2. Account Deduplication Engine: Developed an identity graph algorithm matching phone numbers, device UUIDs, and payment method hashes to detect and consolidate redundant accounts.
+  3. WhatsApp Business Notification Channel: Migrated critical booking confirmations and payment reminders from SMS to WhatsApp Business API, boosting open rates to 75% and reducing communication overhead by 6%.
+  4. Internal Refund Arbitration Console: Designed specialized CSO dispute resolution views that accelerated complex refund approvals from 3 days to under 4 hours.
+- Measurable Outcomes:
+  - 85% reduction in customer service refund processing turnaround.
+  - 50% decrease in redundant account creation, saving half of messaging quotas.
+  - 40% reduction in checkout completion time.
+  - +10% increase in newly transacting customer cohorts.
+
+### 3. AdaKerja (2021 - 2022)
+- Role: Product Manager
+- Domain: Blue-Collar Recruitment Platform & SME Commerce
+- Context & Problem:
+  Low payment funnel conversion on mobile web due to unstable 3G/4G connectivity across Tier 2/3 Indonesian regions. Development velocity was hindered by conflicting backlogs across three separate engineering squads.
+- Product Architecture & Technical Decisions:
+  1. Progressive Mobile Checkout: Designed a lightweight, single-page checkout flow with local client-side form caching so users on unstable mobile networks did not lose their application data upon packet drops.
+  2. Squad Alignment & North Star Framework: Replaced disconnected squad backlogs with a unified product roadmap centered on a single metric: verified candidate activations.
+- Measurable Outcomes:
+  - +60% uplift in payment click-through rate (CTR).
+  - Unified three cross-functional squads behind synchronized release cadences.
+
+---
+
+## Technical Stack & Tooling
+
+### Artificial Intelligence & Automation
+- Prompt engineering & structured generation
+- Retrieval-Augmented Generation (RAG)
+- Autonomous agent architectures (n8n, OpenClaw, Antigravity IDE)
+- Local model deployment (Ollama, vLLM, llama.cpp)
+- Multi-modal document parsing (Docling, PaddleOCR)
+
+### Software Engineering
+- Languages: JavaScript (ESNext), TypeScript, Python, SQL, HTML5, CSS3
+- Frontend: React 18, Next.js, Vite 6, Tailwind CSS v4, Three.js, Lucide
+- Backend & Cloud: Node.js, REST APIs, Supabase, PostgreSQL, Netlify Edge CDN, Vercel, Git
+
+### Product Management Disciplines
+- INVEST-compliant Gherkin user stories and acceptance criteria
+- Poka-Yoke error proofing and negative permission UI security
+- Data-driven telemetry (Mixpanel, GoatCounter, Metabase)
+- A/B experimentation and conversion funnel analysis
+- Technical PRD authoring and cross-functional engineering alignment
+
+---
+
+## Tools Lab Applications
+
+1. LLM Token & Margin Simulator (`/tools/llm-token-economics`):
+   Allows AI product leaders to simulate token usage, context window consumption, and unit economics across OpenAI, Anthropic, and open-source models with real-time margin sensitivity sliders.
+
+2. PRD Prompt Compiler & Gherkin Engine (`/tools/prd-prompt-compiler`):
+   Transforms natural language product briefs into production-grade Gherkin user stories with explicit negative error cases and authorization boundaries.
+
+3. Multilingual ASR Model Selector (`/tools/asr-model-selector`):
+   Comparative evaluation matrix benchmarking Whisper, Conformer, and regional foundation models for Southeast Asian code-switching dialects and mixed-language environments.
+
+4. CalSnap (`https://calendar-snap.vercel.app/`):
+   AI agent utility converting calendar event screenshots and message snippets into structured Google Calendar entries and downloadable .ics files.

@@ -50,6 +50,14 @@ export default function App() {
 
   const tool = slug ? getToolBySlug(slug) : null;
 
+  useEffect(() => {
+    if (tool) {
+      document.title = `${tool.title} | Tools Lab - Athur Naufan Muharam`;
+    } else {
+      document.title = 'AI Product Management Tools Lab | Athur Naufan Muharam';
+    }
+  }, [tool]);
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <a className="skip-link" href="#main">
