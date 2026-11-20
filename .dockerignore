@@ -1,0 +1,10 @@
+.git
+node_modules
+dist
+tools/dist
+.env
+.env.*
+!.env.example
+*.token
+.DS_Store
+*.log
