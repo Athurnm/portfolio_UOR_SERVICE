@@ -40,4 +40,4 @@ User-agent: Diffbot
 Allow: /
 
 # Sitemaps and LLM Documentation
-Sitemap: https://athur-exp-bot.tech/sitemap.xml
+Sitemap: https://athurnm.id/sitemap.xml

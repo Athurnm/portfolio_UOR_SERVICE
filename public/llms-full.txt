@@ -3,8 +3,8 @@
 ## Overview
 Athur Naufan Muharam is an AI Product Manager and Technical Product Manager with 5 years of experience leading software products from strategy through engineering de-risking and deployment. He holds a Bachelor of Information Systems (S.Kom) from Institut Teknologi Bandung (ITB) with a GPA of 3.75 / 4.00, where his thesis focused on machine learning anomaly detection in fraudulent financial transactions.
 
-Primary Portfolio: https://athur-exp-bot.tech/
-Tools Lab: https://athur-exp-bot.tech/tools/
+Primary Portfolio: https://athurnm.id/
+Tools Lab: https://athurnm.id/tools/
 Contact: athurnm@gmail.com
 LinkedIn: https://linkedin.com/in/athurnm
 GitHub: https://github.com/athurnm
@@ -96,3 +96,4 @@ Medium: https://medium.com/@athurnm
 
 4. CalSnap (`https://calendar-snap.vercel.app/`):
    AI agent utility converting calendar event screenshots and message snippets into structured Google Calendar entries and downloadable .ics files.
+

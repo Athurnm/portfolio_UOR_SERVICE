@@ -4,9 +4,9 @@
 
 - Name: Athur Naufan Muharam
 - Role: AI Product Manager / Technical Product Manager
-- Primary Website: https://athur-exp-bot.tech/
-- Tools Lab: https://athur-exp-bot.tech/tools/
-- Full Context: https://athur-exp-bot.tech/llms-full.txt
+- Primary Website: https://athurnm.id/
+- Tools Lab: https://athurnm.id/tools/
+- Full Context: https://athurnm.id/llms-full.txt
 - Location: Jakarta, Indonesia (WIB / UTC+7)
 - Availability: Open to relocation to the Netherlands, Australia, or Singapore (requires visa sponsorship). Also open to remote roles.
 - Email: athurnm@gmail.com
@@ -72,8 +72,9 @@ Every metric below is traceable to production releases and operational logs:
 
 ## Tools Lab & Utilities
 
-A decoupled tools playground hosted at https://athur-exp-bot.tech/tools/ featuring containerized PM utilities:
+A decoupled tools playground hosted at https://athurnm.id/tools/ featuring containerized PM utilities:
 - LLM Token & Margin Simulator (/tools/llm-token-economics): Models token consumption, margin impacts, and pricing tiers across multi-agent workflows.
 - PRD Prompt Compiler & Gherkin Engine (/tools/prd-prompt-compiler): Transforms unstructured requirements into INVEST-compliant Gherkin user stories.
 - Multilingual ASR Model Selector (/tools/asr-model-selector): Benchmarks Whisper, Conformer, and regional foundation models for Southeast Asian code-switching speech.
 - CalSnap (https://calendar-snap.vercel.app/): AI-powered screenshot and unstructured text calendar parser.
+
